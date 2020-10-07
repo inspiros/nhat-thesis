@@ -38,6 +38,7 @@
 %\usepackage{subfig}
 \usepackage{graphicx}
 %\usepackage[first,light]{draftcopy} % Fr Probedruck
+\usepackage{lineno}
 \usepackage[plainpages=false,pdfpagelabels,hypertexnames=false]{hyperref}
 \usepackage{pdfpages}   %include pdf files
 \usepackage{listings} %include sourcecode
@@ -52,16 +53,16 @@
 \usepackage{setspace}
 \usepackage{array}
 \usepackage{nomencl}
-% \usepackage[table]{xcolor}
+\usepackage{xcolor}
 \usepackage{longtable}
 \usepackage{url}
 \usepackage{subcaption}
-\usepackage{longtable}
 %\usepackage{paralist}
 \usepackage{tipa}
 \usepackage{csquotes}
 %\usepackage{textcomp}  %mit \textcent geht Cent-Symbol
-
+\usepackage{diagbox}
+\usepackage[linesnumbered,ruled]{algorithm2e}
 
 % Tiefe der Kapitelnummerierung beeinflussen
 \setcounter{secnumdepth}{3} % Tiefe der Nummerierung
@@ -147,10 +148,11 @@
     \cleardoublepage % Seitenumbruch erzwingen vor nderung des Nummerierungsstils
     \normalsize
     \pagenumbering{arabic}
-    \input{sections/Introduction}
-    \input{sections/TechnicalBackground}
-    \input{sections/RelatedWorks}
-    \input{sections/ProposedModel}
+    \input{sections/introduction}
+    \input{sections/technical_background/index}
+    \input{sections/proposed_method/index}
+    \input{sections/experiments/index}
+    \input{sections/conclusion/index}
 
     \cleardoublepage
     \footnotesize
