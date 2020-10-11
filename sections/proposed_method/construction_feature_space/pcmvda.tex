@@ -58,32 +58,82 @@
 
     Let's look at the Fig.\ref{fig:frw}, the nominator of MvDA(-vc) $\boldsymbol{S}_B^y$ is the sum of all distances from mean of every class $\mu_i$, $i = {1,...,c}$ to the mean of all classes $\mu$. This helps to push class far away from the mean of all classes (the dotted green lines in Fig.\ref{fig:frw}). However, it may not ensure that the classes will be far from each other (Fig.\ref{fig:pc-MvDA}a). In this work, we take the pairwise distance into account and integrate them in an multi-view framework (the dotted violet lines in Fig.\ref{fig:frw}). Thanks to this, the classes will be more discriminated (Fig. \ref{fig:pc-MvDA}b). The algorithm for solving pc-MvDA is presented in supplemental materials. 
 
-    \textbf{Illustrative examples:} We illustrate the advantage of pc-MvDA on artificial datasets. Firstly, using function provided by scikit-learn library, we generate several isotropic Gaussian blobs equal to desired number of classes as data samples from one single view. To generate other views, we clone and apply translation, point-wise noise and rotation with random orthogonal group multiplication to the first view.
+    \paragraph{Illustrative examples}
+        We illustrate the advantage of pc-MvDA on artificial datasets. Firstly, using function provided by scikit-learn library, we generate several isotropic Gaussian blobs equal to desired number of classes as data samples from one single view. To generate other views, we clone and apply translation, point-wise noise and rotation with random orthogonal group multiplication to the first view.
 
-    In Fig.\ref{fig:synthetic1}, MvDA and pc-MvDA results on 2D synthetic dataset of 180 data points in 2-D space. There are three classes, observed at three viewpoints. We show data distribution and 1-D projection results using MvDA and pc-MvDA respectively. We notice that data points of two classes (the first and the third classes) are close together in original space. When we project in common space by MvDA, these classes are still close together. In contrast, these classes are more discriminant when projected by pc-MvDA.
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.7\linewidth]{Figs/pc-MvDA.png}
+            \caption{a) MvDA does not optimize the distance between paired classes in common space. b) pc-MvDA takes pairwise distances into account then distinguish better the classes.}
+            %\vspace{-0.3cm}
+            \label{fig:pc-MvDA}
+        \end{figure}
 
-    Similar to the first example, in the second example, we generate 300 data points of 5 classes observed from 3 different views (Fig.\ref{fig:synthetic2}). We observe that the five clusters of pc-MvDa common space contract strongly and become more separated as compared to the MvDA results (especially the first and the fourth classes).
+        In Fig.\ref{fig:synthetic1}, MvDA and pc-MvDA results on 2D synthetic dataset of 180 data points in 2-D space. There are three classes, observed at three viewpoints. We show data distribution and 1-D projection results using MvDA and pc-MvDA respectively. We notice that data points of two classes (the first and the third classes) are close together in original space. When we project in common space by MvDA, these classes are still close together. In contrast, these classes are more discriminant when projected by pc-MvDA.
 
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.7\linewidth]{Figs/pc-MvDA.png}
-        \caption{a) MvDA does not optimize the distance between paired classes in common space. b) pc-MvDA takes pairwise distances into account then distinguish better the classes.}
-        %\vspace{-0.3cm}
-        \label{fig:pc-MvDA}
-    \end{figure}
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=1\linewidth]{Figs/Synthetic1.png}
+            \caption{A synthetic dataset of 180 data points, evenly distributed to 3 classes among 3 different views; a) 2-D original distribution; b) 1-D projection of MvDA; c) 1-D projection of pc-MvDA}
+            %\vspace{-0.3cm}
+            \label{fig:synthetic1}
+        \end{figure}
 
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=1\linewidth]{Figs/Synthetic1.png}
-        \caption{A synthetic dataset of 180 data points, evenly distributed to 3 classes among 3 different views; a) 2-D original distribution; b) 1-D projection of MvDA; c) 1-D projection of pc-MvDA}
-        %\vspace{-0.3cm}
-        \label{fig:synthetic1}
-    \end{figure}
+        Similar to the first example, in the second example, we generate 300 data points of 5 classes observed from 3 different views (Fig.\ref{fig:synthetic2}). We observe that the five clusters of pc-MvDa common space contract strongly and become more separated as compared to the MvDA results (especially the first and the fourth classes).
 
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=1\linewidth]{Figs/Synthetic2.png}
-        \caption{A synthetic dataset of 300 data points, evenly distributed to 5 classes among 3 different views; a) 3-D original distribution; b) 2-D projection of MvDA; c) 2-D projection of pc-MvDA}
-        %\vspace{-0.3cm}
-        \label{fig:synthetic2}
-    \end{figure}
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=1\linewidth]{Figs/Synthetic2.png}
+            \caption{A synthetic dataset of 300 data points, evenly distributed to 5 classes among 3 different views; a) 3-D original distribution; b) 2-D projection of MvDA; c) 2-D projection of pc-MvDA}
+            %\vspace{-0.3cm}
+            \label{fig:synthetic2}
+        \end{figure}
+
+    \paragraph{Algorithm to solve pc-MvDA}
+        As the proposed objective does not match any optimization form of generalized eigenvalue problems, gradient descent algorithm is used to solve pc-MvDA. This approach also allow the algorithm to update incrementally even in higher dimensional data where the computations of matrix inversion and eigenvectors are not conducive. The derivative of Eq.\eqref{eq:pc-MvDA} is:
+
+        \begin{equation}
+            \frac{\partial J\left(W\right)}{\partial W}=-\sum_{a<b}^{c}{\frac{qn_an_b}{{n_{cc}}^2{J_{ab}\left(W\right)}^{q+1}}\frac{\partial J_{ab}\left(W\right)}{\partial W}}
+        \end{equation}
+
+        where $J_{ab}\left(W\right)={tr\left({\boldsymbol{S}_B^y}_{ab}\right)}/{tr\left({\boldsymbol{S}_W^y}_{ab}\right)}$ is the Fisher loss of class pair $a$ and $b$. Its gradient is computed using the funky trace derivative and quotient rule:
+
+        \begin{equation}
+            \frac{\partial J_{ab}\left(W\right)}{\partial W}=\frac{tr\left({\boldsymbol{S}_W^y}_{ab}\right)W^T\left({\boldsymbol{S}_B^x}_{ab}+{{\boldsymbol{S}_B^x}_{ab}}^T\right)-tr\left({\boldsymbol{S}_B^y}_{ab}\right)W^T\left({\boldsymbol{S}_W^x}_{ab}+{{\boldsymbol{S}_W^x}_{ab}}^T\right)}{{tr\left({\boldsymbol{S}_W^y}_{ab}\right)}^2}
+            \label{eq:grad_Jab}
+        \end{equation}
+
+        The superscript $x$ replacing $y$ in scatter matrices notations means that they denote the pre-transformed version. With simple algebra, we can rewrite the formulas in matrix multiplication form, separating transformation vectors $\omega_j$ in a concatenated matrix $W$ and a multi-view covariance matrix constructed from $v\times v$ cells, each cell $S_{jk}$ stands for the covariance between view $j$ and view $k$.
+
+        \begin{equation}
+            \boldsymbol{S}^y=W^T\boldsymbol{S}^xW=\left[\begin{matrix}\omega_1^T&\omega_2^T&\cdots&\omega_v^T\\\end{matrix}\right]\left[\begin{matrix}S_{11}&S_{12}&\cdots&S_{1v}\\S_{21}&S_{22}&\cdots&S_{2v}\\\vdots&\vdots&\ddots&\vdots\\S_{v1}&S_{v2}&\cdots&S_{vv}\\\end{matrix}\right]\left[\begin{matrix}\omega_1\\\omega_2\\\vdots\\\omega_v\\\end{matrix}\right]
+        \end{equation}
+
+        The complete algorithm to compute $\nabla J$ is given in Algorithm \ref{algo:grad_computation}.
+
+        \begin{algorithm}
+            \SetKwInOut{Input}{Input}
+            \SetKwInOut{Output}{Output}
+            \SetEndCharOfAlgoLine{\relax}
+            \Input{$W$, \{$X$, $\mu$\}, $q$}
+            \Output{$\nabla J\left(W\right)$}
+            $\boldsymbol{F} = 0$\;
+            Compute $\boldsymbol{S}_W^x$ according to Eq.\eqref{eq:MvDA_Sw}\;
+            \For{$a=1$ \KwTo $c$} {
+                \For{$b=a+1$ \KwTo $c$} {
+                    Compute ${\boldsymbol{S}_B^x}_{ab}$ according to Eq.\eqref{eq:Sb_ab}\;
+                    Compute ${\boldsymbol{S}_W^x}_{ab}$ according to Eq.\eqref{eq:Sw_ab}\;
+                    Compute ${\boldsymbol{S}_B^y}_{ab}=W^T{\boldsymbol{S}_B^x}_{ab}W$\;
+                    Compute ${\boldsymbol{S}_W^y}_{ab}=W^T{\boldsymbol{S}_W^x}_{ab}W$\;
+                    Compute $J_{ab}=tr\left({\boldsymbol{S}_B^y}_{ab}\right)/tr\left({\boldsymbol{S}_W^y}_{ab}\right)$\;
+                    Compute $\nabla J_{ab}$ according to Eq.\eqref{eq:grad_Jab}\;
+                    $\boldsymbol{F} = \boldsymbol{F} + n_an_b\nabla J_{ab}/J_{ab}^{q+1}$\;
+                }
+            }
+            $\nabla J = {-q\boldsymbol{F}}/{n_{cc}^2}$\;
+            \Output{$\nabla J$}
+            \caption{Computation of $\nabla J\left(W\right)$ (i.e. gradient of Eq.\eqref{eq:pc-MvDA})}
+            \label{algo:grad_computation}
+        \end{algorithm}
+
+        No further constraint is imposed to the model. In my implementation of pc-MvDA in Pytorch, the computation of gradient is in fact handled by automatic differentiation. I choose Adam as optimizer with learning rate set to $0.01$. To have better starting point and mitigate variances, pc-MvDA is initialized with transformation learnt by MvDA.

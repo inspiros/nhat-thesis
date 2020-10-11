@@ -4,7 +4,7 @@
     Suppose that actions belonging to $c$ classes are observed from $v$ views, the number of samples from the $j^{th}$ view of the $i^{th}$ class is $n_{ij}$. We define $X = \{\boldsymbol{x}_{ijk}|i=(1,..,c);j = (1,..,v);k=(1,..,n_{ij})\}$ as samples from $v$ views where 
     $\boldsymbol{x}_{ijk} \in R^{d_j}$ is the $k^{th}$ sample from the $j^{th}$ view of the $i^{th}$ class, $d_j$ is the dimensions of data at the $j^{th}$ view. Here ${\boldsymbol x}_{ijk}$ is a feature vector extracted from the $k^{th}$ sample from the $j^{th}$ view of the $i^{th}$ class. Different methods for features extraction from single view have been presented in previous sections. 
 
-    \textbf{Multi-view discriminant analysis (MvDA)}
+    \paragraph{Multi-view discriminant analysis (MvDA)}
     MvDA was an extension of LDA for multi-view scenario \cite{kan2015multi}. It tries to determine a set of $v$ linear transformations to project all action samples from each view $j = (1,..,v)$ to a common space. The projection results of $X$ on the common space is denoted by $Y = \{\boldsymbol{y}_{ijk} = w_j^T\boldsymbol{x}_{ijk}|i=(1,..,c); j=(1,..,v); k=(1,...,n_{ij})\}$. The common space is built by maximizing the between-class variation $\boldsymbol{S}_B^y$ while minimizing the within-class variation $\boldsymbol{S}_W^y$ from all views. $\boldsymbol{S}_B^y$ and $\boldsymbol{S}_W^y$ are computed as follows: 
     \begin{align}
         \boldsymbol{S}_W^y &= \sum_{i=1}^{c}\sum_{j=1}^{v}\sum_{k=1}^{n_{ij}}(y_{ijk}-\boldsymbol{\mu}_i)(y_{ijk}-\boldsymbol{\mu}_i)^T \label{eq:MvDA_Sw}\\
@@ -16,23 +16,22 @@
         (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) = \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y)}
         \label{eq:MvDA}
     \end{equation}
-    According to \cite{kan2016multi}, the optimization problem could be analytically solved through generalized eigenvalue decomposition. 
+    According to \cite{kan2016multi}, the optimization problem could be analytically solved through eigenvalue decomposition. 
 
-    %\textbf{Multi-view discriminant analysis with view consistency (MvDA-vc):}
-     In \cite{kan2016multi}, the authors observed that as multiple views correspond to the same objects, there should be some correspondence between multiple views. They then introduce a view consistency constraint into the objective function. The method is called as MvDA-vc. In this paper, we will also compare with MvDA-vc but our method improves the MvDA, so we will not detail MvDA-vc in this section. 
-     
-     %According to the experimental results presented in the next section, MvDA-vc helps to improves significantly performance of recognition. However, it is difficult to explain explicitly and intuitively how view consitency helpts
-     
-    %  , that means if $\boldsymbol{X}_j, \boldsymbol{X}_r$ are observed at $j^{th}$ and $r^{th}$ views, then there exists a certain transformation $\boldsymbol{R}$ such that $\boldsymbol{X}_j = \boldsymbol{R}\boldsymbol{X}_r$. As a result, the transformations obtained from two views (i.e. the projection of features extracted from singe view to common view) should have similar relationship: ${\omega}_j = \boldsymbol{R}{\omega}_r$. Let us define $\beta_i$ that captures the structure of the transformation ${\omega}_i$. Then the $\beta_j$ and $\beta_r$ capturing the structures of two transformations of two views $j$ and $r$ should be identical ${\beta}_j = {\beta}_r$.
-     
-    %  Generalizing to $v$ views, suppose that ${\boldsymbol\beta}_j, j=(1,..,v)$ captures the structures of $v$ transformations ${w}_j$. Following the above observation, the $\boldsymbol{\beta}_r, r=(1,..,v)$ should resemble mutually. That means the similarity between the pair of $\boldsymbol{\beta}_j$ and $\boldsymbol{\beta}_r$ should be minimized. 
-    % \begin{equation}
-    %      \sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2
-    % \end{equation}
-    %  This term is called in \cite{kan2016multi} {\itshape view consistency} and will be added to the denominator of Eq.\eqref{eq:MvDA}
-    % \begin{equation}
-    % \small
-    %     (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) = \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y) + \alpha\sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2} 
-    %     \label{eq:MvDA-vc}
-    % \end{equation}
-    % Similarly, this optimization problem could be analytically solved by relaxing to the ratio trace problem as Eq.\eqref{eq:MvDA}. In the Eq.\eqref{eq:MvDA-vc}, $\alpha$ is an empirically chosen parameter. It puts a weight on the view-consistency assumption. When $\alpha = 0$, the MvDA-vc becomes the original MvDA. 
+    \paragraph{Multi-view discriminant analysis with view consistency (MvDA-vc):}
+    In \cite{kan2016multi}, the authors observed that as multiple views correspond to the same objects, there should be some correspondence between multiple views. They then introduce a view consistency constraint into the objective function. The method is called as MvDA-vc. %In this paper, we will also compare with MvDA-vc but our method improves the MvDA, so we will not detail MvDA-vc in this section. 
+    
+    %According to the experimental results presented in the next section, MvDA-vc helps to improves significantly performance of recognition. However, it is difficult to explain explicitly and intuitively how view consitency helpts
+    
+    TODO, that means if $\boldsymbol{X}_j, \boldsymbol{X}_r$ are observed at $j^{th}$ and $r^{th}$ views, there exists a certain transformation $\boldsymbol{R}$ such that $\boldsymbol{X}_j = \boldsymbol{R}\boldsymbol{X}_r$. As a result, the transformations obtained from two views (i.e. the projection of features extracted from singe view to common view) should have similar relationship: ${\omega}_j = \boldsymbol{R}{\omega}_r$. Let us define $\beta_i$ that captures the structure of the transformation ${\omega}_i$. Then the $\beta_j$ and $\beta_r$ capturing the structures of two transformations of two views $j$ and $r$ should be identical ${\beta}_j = {\beta}_r$.
+    
+    Generalizing to $v$ views, suppose that ${\boldsymbol\beta}_j, j=(1,..,v)$ captures the structures of $v$ transformations ${w}_j$. Following the above observation, the $\boldsymbol{\beta}_r, r=(1,..,v)$ should resemble mutually. That means the similarity between the pair of $\boldsymbol{\beta}_j$ and $\boldsymbol{\beta}_r$ should be minimized. 
+    \begin{equation}
+         \sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2
+    \end{equation}
+     This term is called in \cite{kan2016multi} {\itshape view consistency} and will be added to the denominator of Eq.\eqref{eq:MvDA}
+    \begin{equation}
+        (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) = \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y) + \alpha\sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2} 
+        \label{eq:MvDA-vc}
+    \end{equation}
+    Similarly, this optimization problem could be analytically solved by relaxing to the trace ratio optimization problem as Eq.\eqref{eq:MvDA}. In the Eq.\eqref{eq:MvDA-vc}, $\alpha$ is an empirically chosen parameter. It puts a weight on the view-consistency assumption. When $\alpha = 0$, the MvDA-vc becomes the original MvDA. 

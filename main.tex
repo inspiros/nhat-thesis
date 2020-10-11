@@ -20,12 +20,11 @@
 \usepackage[active]{srcltx}
 %\usepackage[activate=normal]{pdfcprot\documentclass[options]{class}} % Optischer Randausgleich -> pdflatex!
 \usepackage{ifthen}
-\usepackage[english,ngerman]{babel}
-%\usepackage[english]{babel}
-%\usepackage{ngerman}
+\usepackage[english]{babel}
 %\usepackage[fixlanguage]{babelbib}
 %\setbiblanguage{english}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[T1]{url}
 \usepackage{ae}
@@ -130,26 +129,29 @@
     \clubpenalty=10000
     \widowpenalty=10000
     \selectlanguage{english}
-    % \input{chapter/TitlePage.tex}
-    % Inhaltsverzeichnis
-    \cleardoublepage % Seitenumbruch erzwingen vor nderung des Nummerierungsstils
+    \input{sections/title.tex}
+
+    \cleardoublepage
     \footnotesize
-    %\begin{otherlanguage}[english]
-    \pagenumbering{roman} % Nummerierung der Seiten ab hier: i, ii, iii, iv...
-    \pagestyle{scrheadings} % Ab hier mit Kopf- und Fusszeile
+    \pagenumbering{roman}
+    \pagestyle{scrheadings}
 
     \normalsize
-    % \input{chapter/Abstract.tex}
-    % \input{chapter/Acknowledgements.tex}
+    \input{sections/abstract.tex}
+    \input{sections/acknowledgements.tex}
+
     \footnotesize
     \tableofcontents
-
-    % Inhaltsverzeichnis
-    \cleardoublepage % Seitenumbruch erzwingen vor nderung des Nummerierungsstils
     \normalsize
+
+    \cleardoublepage
     \pagenumbering{arabic}
+    \listoffigures
+    \listoftables
+
+    \cleardoublepage
     \input{sections/introduction}
-    \input{sections/technical_background/index}
+    \input{sections/background/index}
     \input{sections/proposed_method/index}
     \input{sections/experiments/index}
     \input{sections/conclusion/index}

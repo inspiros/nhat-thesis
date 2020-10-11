@@ -1,3 +1,7 @@
 %!TEX root = ../../main.tex
 
-\section{Drawbacks}
+\section{Drawbacks} \label{sec:drawbacks}
+    The overall framework is not end-to-end trainable.
+    The proposed pc-MvDA is a batch algorithm, in effect, it is essential to process whole training dataset at once to compute class means at each optimization step.
+    This makes pc-MvDA unsuitable to be a loss function that trains multiple large-scale neural networks concurrently, especially when input data is 3-dimensional spatio-temporal tensors.
+    
