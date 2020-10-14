@@ -20,7 +20,7 @@
 \usepackage[active]{srcltx}
 %\usepackage[activate=normal]{pdfcprot\documentclass[options]{class}} % Optischer Randausgleich -> pdflatex!
 \usepackage{ifthen}
-\usepackage[english]{babel}
+\usepackage[english,vietnamese]{babel}
 %\usepackage[fixlanguage]{babelbib}
 %\setbiblanguage{english}
 \usepackage[utf8]{inputenc}
@@ -39,17 +39,16 @@
 %\usepackage[first,light]{draftcopy} % Fr Probedruck
 \usepackage{lineno}
 \usepackage[plainpages=false,pdfpagelabels,hypertexnames=false]{hyperref}
-\usepackage{pdfpages}   %include pdf files
+\usepackage{pdfpages} %include pdf files
 \usepackage{listings} %include sourcecode
 \usepackage{color}
-\definecolor{commentgreen}{rgb}{0,0.5,0}
 \usepackage{multirow}
 \usepackage{verbatim}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{bbm}
 \usepackage{enumitem}
-\usepackage{setspace}
 \usepackage{array}
 \usepackage{nomencl}
 \usepackage{xcolor}
@@ -62,6 +61,7 @@
 %\usepackage{textcomp}  %mit \textcent geht Cent-Symbol
 \usepackage{diagbox}
 \usepackage[linesnumbered,ruled]{algorithm2e}
+\definecolor{commentgreen}{rgb}{0,0.5,0}
 
 % Tiefe der Kapitelnummerierung beeinflussen
 \setcounter{secnumdepth}{3} % Tiefe der Nummerierung
@@ -69,21 +69,22 @@
 
 % Hier in die zweite geschweifte Klammer jeweils
 % die persnlichen Daten eintragen:
-%\newcommand{\artderausarbeitung}{PhD Thesis}
-\newcommand{\artderausarbeitung}{}
-%\newcommand{\namedesautors}{Anna Marie Kruspe}
-\newcommand{\namedesautors}{}
-\newcommand{\inventarisierungsnummer}{}
+\newcommand{\typeofelaboration}{Master Thesis}
+\newcommand{\nameofauthor}{Tran Hoang Nhat}
+\newcommand{\idofauthor}{CBC19005}
+\newcommand{\majorofauthor}{Control Engineering and Automation}
 
+\newcommand*\en{\fontencoding{T1}\selectfont\selectlanguage{english}}
+\newcommand*\vn{\fontencoding{T5}\selectfont\selectlanguage{vietnamese}}
 \newcommand{\markup}[1]{\textbf{#1}}
 
 % Seitenlayout festlegen. Hier nichts ndern!
 \pagestyle{scrplain}
 \ihead[]{\headmark}
-\ohead[]{\pagemark}
+\ohead[]{\typeofelaboration}
 \chead[]{}
-\ifoot[]{\scriptsize \inventarisierungsnummer}
-\ofoot[]{\scriptsize \artderausarbeitung\ \namedesautors}
+\ifoot[]{\scriptsize \nameofauthor\ - \idofauthor}
+\ofoot[]{\pagemark}
 \cfoot[]{}
 \renewcommand{\titlepagestyle}{scrheadings}
 \renewcommand{\partpagestyle}{scrheadings}

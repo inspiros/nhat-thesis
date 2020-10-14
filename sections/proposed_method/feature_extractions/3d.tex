@@ -25,4 +25,7 @@
     \end{figure}
     A C3D network contains 8 convolution, 5 max-pooling and 2 fully connected layers as illustrated in Fig. \ref{fig:C3D}. 
     % The number of filters of convolution layers from Conv1 to Conv5 are 64, 128, 256, 512, 512 respectively. All 3D convolution kernels are of size $3\times3\times3$ with stride $1\times1\times1$ and followed by a 3D batch normalization layer. 
-    We utilize the network pre-trained on Sports-1M and fine-tuned on Kinetics dataset. To apply in our framework of hand gestures, we apply transfer learning technique on each data stream. Detail of training the network will be presented in section \ref{sec:experimental_result}. The feature vector of 4096 dimensions extracted from FC\-6 layer will be served for training and testing classifiers in further steps.
+    We utilize the network pre-trained on Sports-1M and fine-tuned on Kinetics dataset.
+    To apply in our framework of hand gestures, we apply transfer learning technique on each data stream.
+    The feature vector of 4096 dimensions extracted from FC\-6 layer will be served for training and testing classifiers in further steps.
+    Details of training the networks as feature extractor for individual views will be presented in Chapter \ref{chap:experimental_result}.

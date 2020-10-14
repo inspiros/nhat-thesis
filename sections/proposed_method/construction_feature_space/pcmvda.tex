@@ -1,6 +1,6 @@
 %!TEX root = ../../../main.tex
 
-\subsection{Pairwise-covariance Multi-view Discriminant Analysis pc-MvDA}
+\subsection{Pairwise-covariance Multi-view Discriminant Analysis}
     MvDA emphasizes on finding a common space with minimal within-class variation while the distances between class means and global mean are jointly maximized. However, the distances between some pairs of classes can be disregarded. In this paper, to obtain this property, we modified MvDA with reformulated between and with-in class scatter matrices terms in a pairwise manner. First, let us define a new inter-class scatter matrix formula that takes paired distance into account:
     \begin{equation}
         \boldsymbol{S}_B^y=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\left(\mu_a-\mu_b\right)\left(\mu_a-\mu_b\right)^T}
@@ -18,7 +18,7 @@
 
     Mathematically, it assumes data samples from each class among all views are identically Gaussian distributed, and contribute evenly to the minimization of intra-class scatter. In reality, it is hardly the case as data variations of samples from different classes and different view points are usually drastically diverse and may also have different dimensions.
 
-    To better represent the distribution of data, pc-MvDA uses a paired intra-scatter matrix which is denoted as
+    To better represent the distribution of data, pc-MvDA uses a paired intra-scatter matrix which is denoted as:
     \begin{equation}
         {\boldsymbol{S}_W^y}_{ab}=\beta\frac{n_a{\boldsymbol{S}_W^y}_a+n_b{\boldsymbol{S}_W^y}_b}{n_a+n_b}+\left(1-\beta\right){\boldsymbol{S}_W^y}
         \label{eq:Sw_ab}
@@ -26,37 +26,39 @@
     where $0\le\beta\le1$ is a hyper-parameter for regularization between the original global intra-covariance ${\boldsymbol{S}_W^y}$ and the novel two local class covariances ${\boldsymbol{S}_W^y}_a$ and ${\boldsymbol{S}_W^y}_b$. This formulation is closer to the value of covariances of both classes than the standard intra-covariance.
 
     Instead of solving the vanilla generalized eigen value problem for the whole dataset, we split it into sub-problems for each pairs of class $a$ and $b$, in which we define the objective distance to be minimized between two corresponding classes.
-    \textbf{Difference of our proposed method compared to pairwise LDA (pc-LDA)}
-    In pc-LDA \cite{kong2014pairwise}, the pairs of $a$ and $b$ classes are regarded as two Gaussian distributions $\mathcal{N}_a(\mu_a,{\boldsymbol{S}_W^y}_a), \mathcal{N}_b(\mu_b,{\boldsymbol{S}_W^y}_b)$ and the objective distance between two classes is defined as their Kullback-Leibler divergence \cite{kullback1951}:
-    \begin{equation}
-        D_{KL}\left(\mathcal{N}_a\parallel\mathcal{N}_b\right)=\frac{1}{2}\left(\mu_a-\mu_b\right)^{T}{\left({\boldsymbol{S}_W^y}_{ab}\right)}^{-1}\left(\mu_a-\mu_b\right),
-    \end{equation}
-    Then the final objective is properly weighted to focus on classes with more samples:
-    \begin{equation}
-        \operatorname*{min}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,...,
-        \boldsymbol{\omega}_v}{J}=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\frac{n_an_b}{{[2D_{KL}\left(\mathcal{N}_a\parallel\mathcal{N}_b\right)]}^q}}
-        \label{eq:pc-LDA}
-    \end{equation}
-    here $q\ge1$ is a hyper-parameter that controls how much the pairs of classes with smaller objective distances are biased over the others.
 
-    In our observation, the minimization of KL divergence for each pairs of classes $a$ and $b$ can be substituted by a generalized eigenvalue problem with the pairwise ${\boldsymbol{S}_W^y}_{ab}$ and the ${\boldsymbol{S}_B^y}_{ab}$ we defined. Although these sub-problems do not have an unified analytical solution to be solved concurrently, the criteria can be formulated in various differentiable ways like in \cite{fukunaga1990441} so we can use gradient descent algorithm:
-    \begin{equation}
-        J_1=\frac{tr(S_B)}{tr(S_W)};\quad 
-        J_2=tr\left(\frac{S_B}{S_W}\right);\quad
-        J_3=tr\left|\left|\frac{S_B}{S_W}\right|\right|;\quad
-        J_4=\frac{det(S_B)}{det(S_W)}
-    \end{equation}
+    \paragraph{Difference of the proposed algorithm compared to pairwise-covariance LDA (pc-LDA)}
+        In pc-LDA \cite{kong2014pairwise}, the pairs of $a$ and $b$ classes are regarded as two Gaussian distributions $\mathcal{N}_a(\mu_a,{\boldsymbol{S}_W^y}_a), \mathcal{N}_b(\mu_b,{\boldsymbol{S}_W^y}_b)$ and the objective distance between two classes is defined as their Kullback-Leibler divergence \cite{kullback1951}:
+        \begin{equation}
+            D_{KL}\left(\mathcal{N}_a\parallel\mathcal{N}_b\right)=\frac{1}{2}\left(\mu_a-\mu_b\right)^{T}{\left({\boldsymbol{S}_W^y}_{ab}\right)}^{-1}\left(\mu_a-\mu_b\right),
+        \end{equation}
 
-    We choosed the former Fisher loss as the ratio of scalar values is computationally cheaper. Comparing to the objective of pc-LDA in Eq.\eqref{eq:pc-LDA}, our proposed model is obviously more efficient since it contains only simple operators and the need to inverse a singular-prone matrix is negated. Therefore, it is better fit in the scenario where we want to train the model multiple iterations over multi-view high dimensional output.
+        Then the final objective is properly weighted to focus on classes with more samples:
+        \begin{equation}
+            \operatorname*{min}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,...,
+            \boldsymbol{\omega}_v}{J}=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\frac{n_an_b}{{[2D_{KL}\left(\mathcal{N}_a\parallel\mathcal{N}_b\right)]}^q}}
+            \label{eq:pc-LDA}
+        \end{equation}
+        here $q\ge1$ is a hyper-parameter that controls how much the pairs of classes with smaller objective distances are biased over the others.
 
-    Our final objective function of pairwise-covariance multi-view discriminant analysis is sum of all pairwise Fisher criteria with normalized weights:
-    \begin{equation}
-        \operatorname*{min}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}{J}=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\frac{n_an_b}{n_{cc}^2}{\left[{\frac{trace\left({\boldsymbol{S}_W^y}_{ab}\right)}{trace\left({\boldsymbol{S}_B^y}_{ab}\right)}}\right]}^{q}}
-        \label{eq:pc-MvDA}
-    \end{equation}
-    where $n_{cc}$ is the number of common components as coined in \cite{you2019multi} or simply number of samples in each view. This added normalization term assures that the objective does not depend on size of dataset.
+        In our observation, the minimization of KL divergence for each pairs of classes $a$ and $b$ can be substituted by a generalized eigenvalue problem with the pairwise ${\boldsymbol{S}_W^y}_{ab}$ and the ${\boldsymbol{S}_B^y}_{ab}$ we defined. Although these sub-problems do not have an unified analytical solution to be solved concurrently, the criteria can be formulated in various differentiable ways like in \cite{fukunaga1990441} so we can use gradient descent algorithm:
+        \begin{equation}
+            J_1=\frac{tr(S_B)}{tr(S_W)};\quad 
+            J_2=tr\left(\frac{S_B}{S_W}\right);\quad
+            J_3=tr\left|\left|\frac{S_B}{S_W}\right|\right|;\quad
+            J_4=\frac{det(S_B)}{det(S_W)}
+        \end{equation}
 
-    Let's look at the Fig.\ref{fig:frw}, the nominator of MvDA(-vc) $\boldsymbol{S}_B^y$ is the sum of all distances from mean of every class $\mu_i$, $i = {1,...,c}$ to the mean of all classes $\mu$. This helps to push class far away from the mean of all classes (the dotted green lines in Fig.\ref{fig:frw}). However, it may not ensure that the classes will be far from each other (Fig.\ref{fig:pc-MvDA}a). In this work, we take the pairwise distance into account and integrate them in an multi-view framework (the dotted violet lines in Fig.\ref{fig:frw}). Thanks to this, the classes will be more discriminated (Fig. \ref{fig:pc-MvDA}b). The algorithm for solving pc-MvDA is presented in supplemental materials. 
+        We choosed the former Fisher loss as the ratio of scalar values is computationally cheaper. Comparing to the objective of pc-LDA in Eq.\eqref{eq:pc-LDA}, our proposed model is obviously more efficient since it contains only simple operators and the need to inverse a singular-prone matrix is negated. Therefore, it is better fit in the scenario where we want to train the model multiple iterations over multi-view high dimensional output.
+
+        Our final objective function of pairwise-covariance multi-view discriminant analysis is sum of all pairwise Fisher criteria with normalized weights:
+        \begin{equation}
+            \operatorname*{min}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}{J}=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\frac{n_an_b}{n_{cc}^2}{\left[{\frac{trace\left({\boldsymbol{S}_W^y}_{ab}\right)}{trace\left({\boldsymbol{S}_B^y}_{ab}\right)}}\right]}^{q}}
+            \label{eq:pc-MvDA}
+        \end{equation}
+        where $n_{cc}$ is the number of common components as coined in \cite{you2019multi} or simply number of samples in each view. This added normalization term assures that the objective does not depend on size of dataset.
+
+        Let's look at the Fig.\ref{fig:frw}, the nominator of MvDA(-vc) $\boldsymbol{S}_B^y$ is the sum of all distances from mean of every class $\mu_i$, $i = {1,...,c}$ to the mean of all classes $\mu$. This helps to push class far away from the mean of all classes (the dotted green lines in Fig.\ref{fig:frw}). However, it may not ensure that the classes will be far from each other (Fig.\ref{fig:pc-MvDA}a). In this work, we take the pairwise distance into account and integrate them in an multi-view framework (the dotted violet lines in Fig.\ref{fig:frw}). Thanks to this, the classes will be more discriminated (Fig. \ref{fig:pc-MvDA}b). The algorithm for solving pc-MvDA is presented in supplemental materials. 
 
     \paragraph{Illustrative examples}
         We illustrate the advantage of pc-MvDA on artificial datasets. Firstly, using function provided by scikit-learn library, we generate several isotropic Gaussian blobs equal to desired number of classes as data samples from one single view. To generate other views, we clone and apply translation, point-wise noise and rotation with random orthogonal group multiplication to the first view.
@@ -136,4 +138,4 @@
             \label{algo:grad_computation}
         \end{algorithm}
 
-        No further constraint is imposed to the model. In my implementation of pc-MvDA in Pytorch, the computation of gradient is in fact handled by automatic differentiation. I choose Adam as optimizer with learning rate set to $0.01$. To have better starting point and mitigate variances, pc-MvDA is initialized with transformation learnt by MvDA.
+        No further constraint is imposed to the proposed model. Although most modern programming frameworks do support the automatic deduction of $\nabla J\left(W\right)$ as backward process of computing the objective $J$, the above algorithm is derived for reimplementation in those that do not (i.e. Matlab). In fact, in my implementation of pc-MvDA in Pytorch, the computation of gradient is handled by automatic differentiation. I choose Adam as optimizer with learning rate set to $0.01$. To have better starting point and mitigate variances, pc-MvDA is initialized with transformation learnt by MvDA.
