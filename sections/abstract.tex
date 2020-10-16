@@ -2,9 +2,29 @@
 
 %\renewcommand{\abstractname}{Kurzfassung}
 \begin{abstract}
-The research field of Music Information Retrieval is concerned with the automatic analysis of musical characteristics. One aspect that has not received much attention so far is the automatic analysis of sung lyrics. On the other hand, the field of Automatic Speech Recognition has produced many methods for the automatic analysis of speech, but those have rarely been employed for singing. This thesis analyzes the feasibility of applying various speech recognition methods to singing, and suggests adaptations. In addition, the routes to practical applications for these systems are described. Five tasks are considered: Phoneme recognition, language identification, keyword spotting, lyrics-to-audio alignment, and retrieval of lyrics from sung queries.\\
-The main bottleneck in almost all of these tasks lies in the recognition of phonemes from sung audio. Conventional models trained on speech do not perform well when applied to singing. Training models on singing is difficult due to a lack of annotated data. This thesis offers two approaches for generating such data sets. For the first one, speech recordings are made more ``song-like''. In the second approach, textual lyrics are automatically aligned to an existing singing data set. In both cases, these new data sets are then used for training new acoustic models, offering considerable improvements over models trained on speech.\\
-Building on these improved acoustic models, speech recognition algorithms for the individual tasks were adapted to singing by either improving their robustness to the differing characteristics of singing, or by exploiting the specific features of singing performances. Examples of improving robustness include the use of keyword-filler HMMs for keyword spotting, an i-vector approach for language identification, and a method for alignment and lyrics retrieval that allows highly varying durations. Features of singing are utilized in various ways: In an approach for language identification that is well-suited for long recordings; in a method for keyword spotting based on phoneme durations in singing; and in an algorithm for alignment and retrieval that exploits known phoneme confusions in singing.\\
+    % \addcontentsline{toc}{chapter}{Abstract}
+    % \chapter*{Abstract}
+
+    Human action recognition (HAR) under different viewpoints is one of the most critical requirements for practical deployment.
+
+
+    % Human action recognition (HAR) under different viewpoints is one of the most critical requirement for practical deployment.
+    % In this thesis, I propose a novel method that leverages successful deep features for action representation and multi-view discriminant analysis to make robust HAR under viewpoint change.
+    % Specifically, various deep learning techniques, from 2D CNNs to 3D CNNs are investigated to capture spatial and temporal characteristics of actions at each individual view.
+    % We then build a common space which tries to keep view-invariant features among views.
+    % This is carried out by learning a set of linear transformations that project separated view features to common view space.
+    % To this end, we first adopt Multi-view Discriminant Analysis (MvDA).
+    % We then introduce pairwise-covariance of classes into the objective function that takes extra-class discriminance into account, namely pc-MvDA.
+    % Both separated view features and common view features are integrated in an unified framework.
+    % Two cross-view and multi-view evaluation protocols have been applied.
+    % Experimental results on three datasets (IXMAS, MuHAVI, MICAGes) show that combination of ResNet-50 3D with proposed pc-MvDA gives the highest recognition accuracy in almost cases.
+    % In addition, our proposed Pairwise-Covariance Discriminant Analysis (pc-MvDA) outperforms the original MvDA 5.29\% in average.
+    % Cross-recognition results have been much better than the one without view discriminant analysis.
+    % It demonstrates that practical deployment could be more feasible by using our proposed framework in reality.
+
+    % The research field of Music Information Retrieval is concerned with the automatic analysis of musical characteristics. One aspect that has not received much attention so far is the automatic analysis of sung lyrics. On the other hand, the field of Automatic Speech Recognition has produced many methods for the automatic analysis of speech, but those have rarely been employed for singing. This thesis analyzes the feasibility of applying various speech recognition methods to singing, and suggests adaptations. In addition, the routes to practical applications for these systems are described. Five tasks are considered: Phoneme recognition, language identification, keyword spotting, lyrics-to-audio alignment, and retrieval of lyrics from sung queries.\\
+    % The main bottleneck in almost all of these tasks lies in the recognition of phonemes from sung audio. Conventional models trained on speech do not perform well when applied to singing. Training models on singing is difficult due to a lack of annotated data. This thesis offers two approaches for generating such data sets. For the first one, speech recordings are made more ``song-like''. In the second approach, textual lyrics are automatically aligned to an existing singing data set. In both cases, these new data sets are then used for training new acoustic models, offering considerable improvements over models trained on speech.\\
+    % Building on these improved acoustic models, speech recognition algorithms for the individual tasks were adapted to singing by either improving their robustness to the differing characteristics of singing, or by exploiting the specific features of singing performances. Examples of improving robustness include the use of keyword-filler HMMs for keyword spotting, an i-vector approach for language identification, and a method for alignment and lyrics retrieval that allows highly varying durations. Features of singing are utilized in various ways: In an approach for language identification that is well-suited for long recordings; in a method for keyword spotting based on phoneme durations in singing; and in an algorithm for alignment and retrieval that exploits known phoneme confusions in singing.\\
 \end{abstract}
 
 

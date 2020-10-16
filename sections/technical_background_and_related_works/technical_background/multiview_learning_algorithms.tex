@@ -1,0 +1,95 @@
+%!TEX root = ../../main.tex
+
+\subsection{Multiview Learning Algorithms}
+
+    The motivation of multiview learning (MvL) algorithms is to construct a common low-dimensional embedding that should preserve sufficient information or even be more informative than each individual view.
+
+    Let's define $X = \{\boldsymbol{x}_{ijk}|i=(1,..,c);j = (1,..,v);k=(1,..,n_{ij})\}$ as samples from $v$ views where $\boldsymbol{x}_{ijk} \in R^{d_j}$ is the $k^{th}$ sample from the $j^{th}$ view of the $i^{th}$ class, $d_j$ is the dimensions of data at the $j^{th}$ view.
+    Here ${\boldsymbol x}_{ijk}$ is a feature vector extracted from the $k^{th}$ sample from the $j^{th}$ view of the $i^{th}$ class.
+    Different methods for features extraction from single view have been presented in previous sections. 
+
+    \subsubsection{Multiview discriminant analysis}
+        Multiview discriminant analysis (MvDA) is an extension of LDA for multi-view scenario \cite{kan2015multi}.
+        It tries to determine a set of $v$ linear transformations to project all action samples from each view $j = (1,..,v)$ to a common space.
+        The projection results of $X$ on the common space is denoted by $Y = \{\boldsymbol{y}_{ijk} = w_j^T\boldsymbol{x}_{ijk}|i=(1,..,c); j=(1,..,v); k=(1,...,n_{ij})\}$.
+        The common space is built by maximizing the between-class variation $\boldsymbol{S}_B^y$ while minimizing the within-class variation $\boldsymbol{S}_W^y$ from all views. $\boldsymbol{S}_B^y$ and $\boldsymbol{S}_W^y$ are computed as follows: 
+
+        \begin{align}
+            \boldsymbol{S}_W^y &= \sum_{i=1}^{c}\sum_{j=1}^{v}\sum_{k=1}^{n_{ij}}(y_{ijk}-\boldsymbol{\mu}_i)(y_{ijk}-\boldsymbol{\mu}_i)^T \label{eq:MvDA_Sw}\\
+            \boldsymbol{S}_B^y &= \sum_{i=1}^{c}n_i(\boldsymbol{\mu}_i - \boldsymbol{\mu})(\boldsymbol{\mu}_i - \boldsymbol{\mu})^T \label{eq:MvDA_Sb}
+        \end{align}
+
+        where $\boldsymbol{\mu}_i=\frac{1}{n_i}\sum_{j=1}^{v}{\sum_{k=1}^{n_{ij}}}{\boldsymbol{y}_{ijk}}$ is the mean of all samples of the $i^{th}$ class from all views in the common space; $\boldsymbol{\mu}=\frac{1}{n}\sum_{i=1}^{c}\sum_{j=1}^{v}{\sum_{k=1}^{n_{ij}}{\boldsymbol{y}_{ijk}}}$ is the mean of all samples of all classes from all views in the common space; $n=\sum_{i=1}^{c}n_i$ is the total data samples from all views.
+
+        In order to separate the unknown transformation vectors, the between-class and within-class scatter matrices are reformulated as:
+
+        \begin{align}
+            \boldsymbol{S}_W^y &= W^{T}X\left(\boldsymbol{I} - \boldsymbol{E}\right)X^{T}W\\
+            \boldsymbol{S}_B^y &= W^{T}X\left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right)X^{T}W
+        \end{align}
+        where $W = \{\omega_1,\omega_2,...,\omega_v\}$ is concatenation of transformation vectors of all views; $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ is identity matrix; $\boldsymbol{\mathbbm{1}} \in \mathbb{R}^{n\times n}$ is matrix of ones; $\boldsymbol{E} \in \mathbb{R}^{n\times n}$ is a square matrix whose elements satisfy:
+        \begin{equation}
+            \boldsymbol{E}_{kl} = \left\{\begin{array}{lr}
+                \frac{1}{n_i}, & \text{if } class(x_k) = class(x_l) = i\\
+                0, & \text{otherwise}
+                \end{array}\right\}
+        \end{equation}
+
+        Then the objective function is formulated by a Rayleigh quotient:
+
+        \begin{align}
+            (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) &= \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y)}\\
+            \boldsymbol{W}^* &= \operatorname*{argmax}_{\boldsymbol{W}}\frac{trace(W^{T}[X\left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right)X^{T}]W)}{trace(W^{T}[X\left(\boldsymbol{I} - \boldsymbol{E}\right)X^{T}]W)}
+            \label{eq:MvDA}
+        \end{align}
+
+        According to \cite{kan2016multi}, the problem satisfies the optimization form of generalized eigenvalue problem and could be analytically solved through eigenvalue decomposition.
+        The concatenated $\boldsymbol{W}^* = \{\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*\}$ could be computed using the same procedure as $\boldsymbol{\omega}^*$ in LDA.
+        Similarly, MvDA can be used as a dimensionality reduction algorithm by choosing $m$ eigenvectors corresponding to $m$ leading eigenvalues.
+
+    \subsubsection{Multiview discriminant analysis with view-consistency}
+
+        In \cite{kan2016multi}, the authors observed that as multiple views correspond to the same objects, there should be some correspondence between multiple views.
+        They then introduce a view consistency constraint into the objective function, that means if $X_j, X_r$ are observed at $j^{th}$ and $r^{th}$ views, there exists a certain transformation $\boldsymbol{R}$ such that $X_j = \boldsymbol{R}X_r$.
+        As a result, the transformations obtained from two views (i.e. the projection of features extracted from singe view to common view) should have similar relationship: ${\omega}_j = \boldsymbol{R}{\omega}_r$.
+        Let's define $\beta_i$ that captures the structure of the transformation ${\omega}_i$.
+
+        \begin{equation}
+            \omega_i = X_i\boldsymbol\beta_i
+            \label{eq:MvDA-vc_beta}
+        \end{equation}
+
+        Then the $\beta_j$ and $\beta_r$ capturing the structures of two transformations of two views $j$ and $r$ should be identical ${\beta}_j = {\beta}_r$.
+
+        Generalizing to $v$ views, suppose that ${\boldsymbol\beta}_j, j=(1,..,v)$ captures the structures of $v$ transformations ${w}_j$.
+        Following the above observation, the $\boldsymbol{\beta}_r, r=(1,..,v)$ should resemble mutually.
+        That means the similarity between the pair of $\boldsymbol{\beta}_j$ and $\boldsymbol{\beta}_r$ should be minimized. 
+
+        \begin{equation}
+            \sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2
+            \label{eq:MvDA-vc_vc}
+        \end{equation}
+
+        From Equation \eqref{eq:MvDA-vc_beta}, we have:
+
+        \begin{equation}
+            \boldsymbol\beta_i = {\left(X_i^{T}X_i\right)}^{-1}X_i^{T}\omega_i \triangleq \boldsymbol{P}_iw_i
+        \end{equation}
+
+        Replacing in Equation \eqref{eq:MvDA-vc_vc} we can reformulate it as:
+
+        \begin{equation}
+            \sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2 = trace\left(W^{T}\boldsymbol{P}^{T}\left(2((v - 1)\boldsymbol{I} - \boldsymbol{\mathbbm{1}})\right)\boldsymbol{P}W\right)
+        \end{equation}
+        where $\boldsymbol{P} = \{\boldsymbol{P}_1,\boldsymbol{P}_2,...,\boldsymbol{P}_v\}$; $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ is identity matrix; $\boldsymbol{\mathbbm{1}} \in \mathbb{R}^{n\times n}$ is matrix of ones.
+        This term is called in \cite{kan2016multi} {\itshape view consistency} and will be added to the denominator of Equation \eqref{eq:MvDA}
+
+        \begin{align}
+            (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) &= \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y) + \alpha\sum_{j,r=1}^{v}||\boldsymbol{\beta_j} - \boldsymbol{\beta_r}||_2^2}\\
+            \boldsymbol{W}^* &= \operatorname*{argmax}_{\boldsymbol{W}}\frac{trace(W^{T}[X\left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right)X^{T}]W)}{trace(W^{T}[X\left(\boldsymbol{I} - \boldsymbol{E}\right)X^{T} + 2\alpha\boldsymbol{P}^T\left((v - 1)\boldsymbol{I} - \boldsymbol{\mathbbm{1}}\right)\boldsymbol{P}]W)}
+            \label{eq:MvDA-vc}
+        \end{align}
+
+        This optimization problem could also be analytically solved by relaxing to the trace ratio optimization problem as Equation \eqref{eq:MvDA}.
+        In the Equation \eqref{eq:MvDA-vc}, $\alpha$ is an empirically chosen parameter that puts a weight on the view-consistency assumption.
+        When $\alpha = 0$, the MvDA-vc becomes the original MvDA. 

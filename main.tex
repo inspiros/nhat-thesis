@@ -1,6 +1,6 @@
 \documentclass[
     oneside,         % oneside/twoside : Einseitiger oder zweiseitiger Druck?
-    10pt,            % Bezug: 12-Punkt Schriftgre
+    12pt,            % Bezug: 12-Punkt Schriftgre
     DIV15,           % Randaufteilung, siehe Dokumentation "KOMA"-Script
     BCOR17mm,        % Bindekorrektur: Innen 17mm Platz lassen. Copyshop-getestet.
     headsepline,     % Unter Kopfzeile Trennlinie (aus: headnosepline)
@@ -26,6 +26,7 @@
 \usepackage[utf8]{inputenc}
 % \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{fontawesome5}
 \usepackage[T1]{url}
 \usepackage{ae}
 \usepackage[final]{graphicx}
@@ -77,6 +78,7 @@
 \newcommand*\en{\fontencoding{T1}\selectfont\selectlanguage{english}}
 \newcommand*\vn{\fontencoding{T5}\selectfont\selectlanguage{vietnamese}}
 \newcommand{\markup}[1]{\textbf{#1}}
+\newcommand{\github}[1]{\href{#1}{\faGithubSquare\ \textit{#1}}}
 
 % Seitenlayout festlegen. Hier nichts ndern!
 \pagestyle{scrplain}
@@ -86,6 +88,16 @@
 \ifoot[]{\scriptsize \nameofauthor\ - \idofauthor}
 \ofoot[]{\pagemark}
 \cfoot[]{}
+\newcommand{\resethead}{\newpage%
+    \ihead[]{\headmark}%
+    \ohead[]{\typeofelaboration}%
+    \chead[]{}%
+}
+\newcommand{\resetfoot}{\newpage%
+    \ifoot[]{\scriptsize \nameofauthor\ - \idofauthor}%
+    \ofoot[]{\pagemark}%
+    \cfoot[]{}%
+}
 \renewcommand{\titlepagestyle}{scrheadings}
 \renewcommand{\partpagestyle}{scrheadings}
 \renewcommand{\chapterpagestyle}{scrheadings}
@@ -99,6 +111,7 @@
 \renewcommand\theequation{\thechapter.\@arabic\c@equation}
 \renewcommand\thefigure{\thechapter.\@arabic\c@figure}
 \renewcommand\thetable{\thechapter.\@arabic\c@table}\makeatother
+
 
 % Quelltextrahmen, klein. Hier nichts ndern!
 \newsavebox{\inhaltkl}
@@ -122,6 +135,7 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\argmax}{argmax}
 
+\newcommand{\listofabbreviations}{\input{sections/list_of_abbreviations}}
 \bibliographystyle{IEEEbib}
 
 \begin{document}
@@ -149,10 +163,11 @@
     \pagenumbering{arabic}
     \listoffigures
     \listoftables
+    \listofabbreviations
 
     \cleardoublepage
     \input{sections/introduction}
-    \input{sections/background/index}
+    \input{sections/technical_background_and_related_works/index}
     \input{sections/proposed_method/index}
     \input{sections/experiments/index}
     \input{sections/conclusion/index}
