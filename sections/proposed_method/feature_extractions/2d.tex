@@ -2,12 +2,13 @@
 
 \subsection{2D CNN based clip-level feature extraction}
     First, the ResNet-50 CNN \cite{he2016deep} is used as a 2D CNN network to extract spatial features of each frame in video.
-    Figure \ref{fig:resnet50} illustrates the architecture of ResNet-50 which composes of five convolutional blocks stacked on top of each other. The network is pre-trained on ImageNet then fine-tuned using training sets described in Section \ref{sec:experimental_result}.
+    Figure \ref{fig:resnet50} illustrates the architecture of ResNet-50 which composes of five convolutional blocks stacked on top of each other.
+    % The network is pre-trained on ImageNet then fine-tuned using training sets described in Section \ref{sec:experimental_result}.
     Deep residual features are extracted from the output of the last convolutional block of the network which is a 2048-D feature vector.
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=1\linewidth]{Figs/Resnet50.png}
-        \caption{Architecture of ResNet-50 utilized in this work for feature extraction at each separated view}
+        \includegraphics[width=1\linewidth]{figs/Resnet50.png}
+        \caption{Architecture of ResNet-50 utilized in this work for feature extraction at each separated view.}
         %\vspace{-0.3cm}
         \label{fig:resnet50}
     \end{figure}
@@ -16,8 +17,8 @@
     Figure \ref{fig:pooling} illustrates three techniques.
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=1\linewidth]{Figs/Pooling.png}
-        \caption{Three pooling techniques: Average Pooling (AP), Recurrent Neural Network (RNN) and Temporal Attention Pooling (TA)}
+        \includegraphics[width=1\linewidth]{figs/Pooling.png}
+        \caption{Three pooling techniques: Average Pooling (AP), Recurrent Neural Network (RNN) and Temporal Attention Pooling (TA).}
         %\vspace{-0.3cm}
         \label{fig:pooling}
     \end{figure}

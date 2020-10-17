@@ -62,7 +62,16 @@
 %\usepackage{textcomp}  %mit \textcent geht Cent-Symbol
 \usepackage{diagbox}
 \usepackage[linesnumbered,ruled]{algorithm2e}
-\definecolor{commentgreen}{rgb}{0,0.5,0}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    % total={170mm,257mm},
+    left=35mm,
+    right=25mm,
+    top=20mm,
+    bottom=30mm,
+ }
+
 
 % Tiefe der Kapitelnummerierung beeinflussen
 \setcounter{secnumdepth}{3} % Tiefe der Nummerierung
@@ -72,25 +81,36 @@
 % die persnlichen Daten eintragen:
 \newcommand{\typeofelaboration}{Master Thesis}
 \newcommand{\nameofauthor}{Tran Hoang Nhat}
+\newcommand{\emailofauthor}{hnhat.tran@gmail.com}
 \newcommand{\idofauthor}{CBC19005}
 \newcommand{\majorofauthor}{Control Engineering and Automation}
 
 \newcommand*\en{\fontencoding{T1}\selectfont\selectlanguage{english}}
 \newcommand*\vn{\fontencoding{T5}\selectfont\selectlanguage{vietnamese}}
+\makeatletter
+\newcommand{\capitalize}[1]{%
+    \edef\@tempa{\expandafter\@gobble\string#1}%
+    \edef\@tempb{\expandafter\@car\@tempa\@nil}%
+    \edef\@tempa{\expandafter\@cdr\@tempa\@nil}%
+    \uppercase\expandafter{\expandafter\def\expandafter\@tempb\expandafter{\@tempb}}%
+    \@namedef{\@tempb\@tempa}{\expandafter\MakeUppercase\expandafter{#1}}
+}
+\makeatother
+
 \newcommand{\markup}[1]{\textbf{#1}}
 \newcommand{\github}[1]{\href{#1}{\faGithubSquare\ \textit{#1}}}
 
 % Seitenlayout festlegen. Hier nichts ndern!
 \pagestyle{scrplain}
-\ihead[]{\headmark}
-\ohead[]{\typeofelaboration}
+\ihead[]{\scriptsize \headmark}
+\ohead[]{\scriptsize \typeofelaboration}
 \chead[]{}
 \ifoot[]{\scriptsize \nameofauthor\ - \idofauthor}
 \ofoot[]{\pagemark}
 \cfoot[]{}
 \newcommand{\resethead}{\newpage%
-    \ihead[]{\headmark}%
-    \ohead[]{\typeofelaboration}%
+    \ihead[]{\scriptsize \headmark}%
+    \ohead[]{\scriptsize \typeofelaboration}%
     \chead[]{}%
 }
 \newcommand{\resetfoot}{\newpage%

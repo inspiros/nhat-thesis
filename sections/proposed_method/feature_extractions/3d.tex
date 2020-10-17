@@ -9,8 +9,8 @@
     The architecture of ResNet-50 3D network is described in the Figure \ref{fig:resnet50_3d}. It has similar architecture as the ResNet-50 but the convolution layers uses 3D operation.  
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=1\linewidth]{Figs/Resnet50_3D.png}
-        \caption{Architecture of ResNet-50 3D utilized in this work for feature extraction}
+        \includegraphics[width=1\linewidth]{figs/Resnet50_3D.png}
+        \caption{Architecture of ResNet-50 3D utilized in this work for feature extraction.}
         %\vspace{-0.3cm}
         \label{fig:resnet50_3d}
     \end{figure}
@@ -18,8 +18,8 @@
     \textbf{C3D}: 3D deep convolution neural network, which was introduced in \cite{tran2015learning}, has shown to be very efficient for action recognition tasks. C3D takes input as an image sequence instead of a static image, computes the 3D convolution on each 3D cubes from video clip. By doing so, C3D captures both spatial and temporal characteristics of action at the same time.
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=1\linewidth]{Figs/C3D.png}
-        \caption{Architecture of C3D utilized in this work for feature extraction}
+        \includegraphics[width=1\linewidth]{figs/C3D.png}
+        \caption{Architecture of C3D utilized in this work for feature extraction.}
         %\vspace{-0.3cm}
         \label{fig:C3D}
     \end{figure}
@@ -28,5 +28,5 @@
     % We utilize the network pre-trained on Sports-1M and fine-tuned on Kinetics dataset.
     The feature vector of 4096 dimensions extracted from FC\-6 layer will be served for training and testing classifiers in further steps.
 
-    To apply in the proposed framework of action and gestures recognition, transfer learning technique is applied for pretrained models on each data stream corresponding to each individual view.
+    To apply in the proposed framework of action and gestures recognition, transfer learning technique is applied for pre-trained models on each data stream corresponding to each individual view.
     Details of pre-trained weights and training process of the networks will be presented in Section \ref{sec:experimental_setup}.

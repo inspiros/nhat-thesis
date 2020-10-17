@@ -130,8 +130,8 @@
             \begin{center}
                 \includegraphics[scale=0.5]{figs/lstm_cell.png}
             \end{center}
-            \caption{A single LSTM cell. From \cite{olah2015understanding}
-            \label{fig:lstm_cell}}
+            \caption{A single LSTM cell. From \cite{olah2015understanding}.}
+            \label{fig:lstm_cell}
         \end{figure}
 
         As can be seen in the Figure \ref{fig:lstm_cell}, there are quite a few more parameters in this cell than in a normal RNN cell. 
@@ -181,8 +181,8 @@
             \begin{center}
                 \includegraphics[scale=0.5]{figs/gru_cell.png}
             \end{center}
-            \caption{A single GRU variation cell. From \cite{olah2015understanding}
-            \label{fig:gru_cell}}
+            \caption{A single GRU variation cell. From \cite{olah2015understanding}.}
+            \label{fig:gru_cell}
         \end{figure}
 
         \begin{equation}
@@ -206,9 +206,9 @@
 
         where $\tilde{h_t} = \tanh(W * [r_t * h_{t-1}, x_t])$.
 
-        \paragraph{Bidirectional RNNs} It should be mentioned that when RNNs are used, they are often wrapped with a bidirectional layer.
-        This simply reverts the input sequence and enters the sequence in both the original and the reverse direction to two separate RNNs, usually LSTM or GRU.
-        % The usefulness of this is particularly intuitive when looking at the network in Figure \ref{fig:rnn}. 
-        When processing the entry $x^{(j)}$, only the entries $t < j$ are known. 
-        However, tokens later in the sequence might have an impact on the previous outputs of the model. 
-        Bidirectional RNNs are able to capture patterns that are overlooked by regular RNNs.
+        % \paragraph{Bidirectional RNNs} It should be mentioned that when RNNs are used, they are often wrapped with a bidirectional layer.
+        % This simply reverts the input sequence and enters the sequence in both the original and the reverse direction to two separate RNNs, usually LSTM or GRU.
+        % % The usefulness of this is particularly intuitive when looking at the network in Figure \ref{fig:rnn}. 
+        % When processing the entry $x^{(j)}$, only the entries $t < j$ are known. 
+        % However, tokens later in the sequence might have an impact on the previous outputs of the model. 
+        % Bidirectional RNNs are able to capture patterns that are overlooked by regular RNNs.
