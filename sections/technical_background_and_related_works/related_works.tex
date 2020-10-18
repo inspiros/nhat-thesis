@@ -12,8 +12,8 @@
         To work with more challenging datasets, effective action recognition approaches rely on powerful learning methods, particularly the deep learning techniques.
         Early works applied 2D CNN on frames of video sequence and then aggregated the information using pooling techniques \cite{karpathy2014large}.
         To exploit the temporal information, different architectures such as LSTM with the internal mechanisms called gates that can deal with short-term memory are proposed \cite{sun2017lattice}.
-        Recently, instead of using 2D convolutional operators, different 3D CNN have been proposed \cite{ji20123d, tran2015learning}, \cite{varol2017long}.
-        Besides, to boost the recognition performance, different approaches tried to combine multiple streams \cite{wang2015towards, feichtenhofer2016convolutional}, \cite{khong2018improving} or to combine both multiple features \cite{wang2015action},\cite{christoph2016spatiotemporal}. %trajectory-pooled deep-convolutional
+        Recently, instead of using 2D convolutional operators, different 3D CNN have been proposed \cite{ji20123d, tran2015learning, varol2017long}.
+        Besides, to boost the recognition performance, different approaches tried to combine multiple streams \cite{wang2015towards, feichtenhofer2016convolutional, khong2018improving} or to combine both multiple features \cite{wang2015action, christoph2016spatiotemporal}. %trajectory-pooled deep-convolutional
         %descriptor - TDD;  ST-ResNet+iDT
         %Recently, many other architectures such as temporal Segment Networks - TSN \cite{wang2016temporal}, ST-VLMPF \cite{duta2017spatio}, P3D ResNet \cite{qiu2017learning}, I3D\cite{carreira2017quo}, 3D ResNeXt \cite{hara2018can}, R(2+1) D-TwoStream \cite{tran2018closer}, CO2FI+ASYN \cite{lin2018action}, and DML \cite{chen2017deep} have shown state-of-the-art performances in action recognition.
         %Previous section briefly gives a survey of different techniques for features extraction and action recognition from common views.
@@ -38,7 +38,7 @@
         Canonical Correlation Analysis (CCA) \cite{Hotelling} can be considered as the first approach of MvL with the aim to find pairs of projections for two views so that the correlations between these views are maximized.
         As CCA can only handle the linear correlation, Kernel CCA (KCCA) was proposed to take non-linear correlation relationship of data into account \cite{Akaho2006}.
         However, both CCA and KCCA are unsupervised methods and can not leverage the label information.
-        In \cite{diethe2008multi-view}, a supervised approach named Multi-view Fisher discriminant analysis (MvFDA) was proposed for binary classification problem.
+        In \cite{diethe2008multiview}, a supervised approach named Multi-view Fisher discriminant analysis (MvFDA) was proposed for binary classification problem.
         All of aforementioned methods are only applicable for two views problem.
 
         To extend to multiple view cases, a natural extension is to maximize the sum of the pairwise correlations.
