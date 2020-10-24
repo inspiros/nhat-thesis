@@ -21,21 +21,25 @@
 
     \section{Objective} \label{sec:intro_objective}
         %we attempt to address two main questions: Is it suitable to deploy a view analysis discriminant techniques for cross-view human action recognition; which kind of deep features could be the best in such framework? 
-        Motivated by the two aforementioned under investigation problems, in this thesis, an unified framework is proposed for cross-view action recognition which consists of two main components: individual view feature extraction and latent common space construction.
-        For feature extraction from individual view, I investigate a range of deep neural networks, from 2D CNNs with different pooling strategies (average pooling, temporal attention pooling or using LSTM) to 3D CNNs with two most recent variations (C3D \cite{tran2015learning} and ResNet-50 3D \cite{hara2018can}).
+        Motivated by the two aforementioned under investigation problems, in the research project at MICA institute, an unified framework is proposed for cross-view action recognition which consists of two main components: individual view feature extraction and latent common space construction. The work in this thesis is part of the work carried out by the research team.
+
+        For feature extraction from individual view, a range of deep neural networks are investigated, from 2D CNNs with different pooling strategies (average pooling, temporal attention pooling or using LSTM) to 3D CNNs with two most recent variations (C3D \cite{tran2015learning} and ResNet-50 3D \cite{hara2018can}).
         These networks have been successfully deployed for human action and gesture recognition in general, but not investigated yet for cross-view recognition scenarios.
 
+        The objective of this thesis focuses on the second stage of the proposed general framework.
         For building a latent common space, I am inspired by idea of multi-view discriminant analysis (MvDA).
-        On the one side, this technique has been shown to be efficient for images based tasks, but not deployed for video based tasks and mostly with deep features extracted from videos as input.
+        This technique has been shown to be efficient for images based tasks, but not deployed for video based tasks and mostly with deep features extracted from videos as input.
         In addition, the MvDA's objective has no explicit constraint to push class centers away from each other.
-        In this step, I extend the original MvDA by introducing the pairwise-covariance constraint while modifying the optimization model.
-        This helps to make between-classes to be more separated in the common feature space than using the baseline MvDA.
+        In this step, with idea based on the proposal of a dimensionality reduction algorithm namely pc-LDA, I extend the original MvDA by introducing the pairwise-covariance constraint while modifying the optimization model that could theoretically directed to train the whole framework end-to-end.
+        This helps to make classes to be more separated in the common feature space than using the baseline MvDA.
+        The new optimization objective is also more efficient than the original conception of pc-LDA in terms of computational complexity.
 
         The main contributions of this thesis are summarized as follows: 
         \begin{itemize}
-            \item Firstly, I improve the MvDA technique by incorporating pairwise-covariance of between-classes that helps to improve the performance. The proposed method is called pc-MvDA. When the number of views is large, the optimization problem is hard to be solved, I then propose a feasible technique to solve optimization problem of pc-MvDA.
-            \item Secondly, various recent neuronal networks for feature extraction are investigated and incorporated in an unified framework with multi-view analysis algorithms for robust cross-view action and gesture recognition.
-            \item Finally, I evaluate the proposed framework on three datasets (IXMAS, MuHAVi and MICAGes). The experimental results show improvement of the proposed method compared to state of the art techniques.
+            \item Firstly, I improve the MvDA technique by incorporating pairwise-covariance of between-classes that helps to separate classes, resulting in improved performance. The proposed method is called pc-MvDA. When either number of views or dimensionality of input data is large, the optimization problem is harder to be solved, I also propose a modification to the objective of pc-MvDA that facilitates the optimization problem.
+            % \item Secondly, various recent neuronal networks for feature extraction are investigated and incorporated in an unified framework with multi-view analysis algorithms for robust cross-view action and gesture recognition.
+            % \item Finally, I evaluate the proposed framework on three datasets (IXMAS, MuHAVi and MICAGes). The experimental results show improvement of the proposed method compared to state of the art techniques.
+            \item Secondly, I incorporate various investigated neuronal networks and multi-view analysis techniques in an unified framework. Then, I evaluate the framework on three datasets (IXMAS, MuHAVi and MICAGes) and compare them to state of the art approaches. The experimental results show that the proposed pc-MvDA supersede baseline MvDA.
         \end{itemize}
 
     \section{Thesis Outline} \label{sec:intro_outline}
@@ -43,7 +47,7 @@
         \begin{description}
             \item[1 Introduction] This chapter. Motivates the work and describes the research goals.
             \item[2 Background and Related Works] Describes the deep learning based approach for feature extraction, dimensionality reduction and multi-view learning algorithms. Also briefly reviews the existing approaches on human action recognition in single and cross-view scenarios and multi-view analysis techniques.
-            \item[3 Proposed Method] Proposes the general architecture and the technical contribution for solving the mentioned research objective.
+            \item[3 Proposed Method] Introduces the general architecture and proposes the technical contribution for solving the mentioned research objective.
             \item[4 Experiments] Reports information regarding experiments: datasets, evaluation protocol, technical setup, results and discussions.
             \item[5 Conclusion] Summarizes the work, points out the contributions, drawbacks and suggests future research directions.
         \end{description}

@@ -12,8 +12,10 @@
     A common feature space is then constructed to keep view invariant features among extracted streams.
     This is carried out by learning a set of linear transformations that projects separated view features into a common dimension.
     To this end, Multi-view Discriminant Analysis (MvDA) is adopted.
-    Then, I introduce pairwise-covariance maximizing extension that takes extra-class discriminance into account, namely pc-MvDA.
-    Experimental results on three datasets (IXMAS, MuHAVI, MICAGes) show the effectiveness of proposed method.
+    However, the original MvDA suffers from odd situations in which the most class-discrepant common space could not be found because its objective is overly concentrated on scattering classes from the global mean but unaware of distance between specific pairs of classes.
+    Therefore, I introduce a pairwise-covariance maximizing extension of MvDA that takes extra-class discriminance into account, namely pc-MvDA.
+    The novel model also differs in the way that is more favorable for training of high-dimensional multi-view data.
+    Experimental results on three datasets (IXMAS, MuHAVI, MICAGes) show the effectiveness of the proposed method.
 
 
     % Human action recognition (HAR) under different viewpoints is one of the most critical requirement for practical deployment.

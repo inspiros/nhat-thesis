@@ -31,7 +31,7 @@
         {score}_{jr}^{\boldsymbol{protocol 2}} & =\left<\left\{\operatorname{accuracy}\left(Y_j,Y_r\right)\middle|\ j,r=(1,..,v)\right\}\right>
     \end{align}
 
-    \textbf{Multi-view strategy:} As MvDA and its variants can theoretically scale for an arbitrary number of views, in order to fairly compare the proposed algorithm with others that only apply for 2 views, I also experiment 2 different multi-view strategies. The key idea is that each strategy restricts the number of views participated in the training process of MvL algorithms.
+    \textbf{Multi-view strategy:} As MvDA and its variants can theoretically scale for an arbitrary number of views, in order to fairly compare the proposed algorithm with others that only apply for 2 views, I also experiment 2 different multi-view strategies. The key idea is that each strategy restricts the number of views participated in the training process of MvA algorithms.
 
     In ``\emph{multi-view}'' strategy, only one set of $W^*=\left\{{\omega}_1, {\omega}_2, ..., {\omega}_v\right\}$ is learnt and all separated view features are transformed $Y_j=\omega_j^TX_j,\ j=(1,...,v)$ before computation of accuracy.
 
