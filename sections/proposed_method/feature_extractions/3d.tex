@@ -16,6 +16,12 @@
     \end{figure}
 
     \textbf{C3D}: 3D deep convolution neural network, which was introduced in \cite{tran2015learning}, has shown to be very efficient for action recognition tasks. C3D takes input as an image sequence instead of a static image, computes the 3D convolution on each 3D cubes from video clip. By doing so, C3D captures both spatial and temporal characteristics of action at the same time.
+
+    A C3D network contains 8 convolution, 5 max-pooling and 2 fully connected layers as illustrated in Figure \ref{fig:C3D}. 
+    % The number of filters of convolution layers from Conv1 to Conv5 are 64, 128, 256, 512, 512 respectively. All 3D convolution kernels are of size $3\times3\times3$ with stride $1\times1\times1$ and followed by a 3D batch normalization layer. 
+    % We utilize the network pre-trained on Sports-1M and fine-tuned on Kinetics dataset.
+    The feature vector of 4096 dimensions extracted from FC\-6 layer will be served for training and testing classifiers in further steps.
+
     \begin{figure}[htbp]
         \centering
         \includegraphics[width=1\linewidth]{figs/C3D.png}
@@ -23,10 +29,6 @@
         %\vspace{-0.3cm}
         \label{fig:C3D}
     \end{figure}
-    A C3D network contains 8 convolution, 5 max-pooling and 2 fully connected layers as illustrated in Figure \ref{fig:C3D}. 
-    % The number of filters of convolution layers from Conv1 to Conv5 are 64, 128, 256, 512, 512 respectively. All 3D convolution kernels are of size $3\times3\times3$ with stride $1\times1\times1$ and followed by a 3D batch normalization layer. 
-    % We utilize the network pre-trained on Sports-1M and fine-tuned on Kinetics dataset.
-    The feature vector of 4096 dimensions extracted from FC\-6 layer will be served for training and testing classifiers in further steps.
 
     To apply in the proposed framework of action and gestures recognition, transfer learning technique is applied for pre-trained models on each data stream corresponding to each individual view.
     Details of pre-trained weights and training process of the networks will be presented in Section \ref{sec:experimental_setup}.

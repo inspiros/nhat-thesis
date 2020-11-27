@@ -1,5 +1,5 @@
 \documentclass[
-    oneside,         % oneside/twoside : Einseitiger oder zweiseitiger Druck?
+    twoside,         % oneside/twoside : Einseitiger oder zweiseitiger Druck?
     12pt,            % Bezug: 12-Punkt Schriftgre
     DIV15,           % Randaufteilung, siehe Dokumentation "KOMA"-Script
     BCOR17mm,        % Bindekorrektur: Innen 17mm Platz lassen. Copyshop-getestet.
@@ -32,6 +32,7 @@
 \usepackage[final]{graphicx}
 \usepackage[automark]{scrlayer-scrpage}
 \usepackage{setspace}
+\usepackage{subcaption}
 \usepackage{floatflt} 
 \usepackage{rotating} 
 \usepackage{wrapfig}
@@ -191,6 +192,7 @@
     \input{sections/proposed_method/index}
     \input{sections/experiments/index}
     \input{sections/conclusion/index}
+    \input{sections/appendix}
 
     \cleardoublepage
     \footnotesize

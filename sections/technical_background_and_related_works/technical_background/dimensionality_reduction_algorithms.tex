@@ -1,20 +1,21 @@
-%!TEX root = ../../main.tex
+%!TEX root = ../../../main.tex
 
 \subsection{Dimensionality Reduction Algorithms}
+
     Dimensionality reduction techniques are important in many applications related to machine learning.
     They aim to find low-dimensional embedding that should preserve sufficient information from the original dimension.
-    Let's define $X = \{\boldsymbol{x}_{ik}|i=(1,..,c);k=(1,..,n_{i})\}$ as training samples where $\boldsymbol{x}_{ik} \in R^{d}$ is the $k^{th}$ sample of the $i^{th}$ class, $d$ is the original dimension of data, $m$ is the desired dimension of data after transformation such that $m < d$.
+    Let's define $X = \{x_{ik}|i=(1,..,c);k=(1,..,n_{i})\}$ as training samples where $x_{ik} \in R^{d}$ is the $k^{th}$ sample of the $i^{th}$ class, $d^x$ is the original dimension of data, $d^y$ is the desired dimension of data after transformation such that $d^y < d^x$.
 
     \subsubsection{Linear discriminant analysis}
         The linear discriminant analysis (LDA) technique is developed to linearly transform the features into a lower dimensional space where the ratio of the between-class variance to the within-class variance is maximized, thereby guaranteering the optimal class separability.
-        The projection results of $X$ on the lower dimensional space is denoted by $Y = \{\boldsymbol{y}_{ik} = w^T\boldsymbol{x}_{ik}|i=(1,..,c); k=(1,...,n_{i})\}$. $\boldsymbol{S}_B^y$ and $\boldsymbol{S}_W^y$ are computed as follows: 
+        The projection results of $X$ on the lower dimensional space is denoted by $Y = \{y_{ik} = w^T x_{ik}|i=(1,..,c); k=(1,...,n_{i})\}$. $\boldsymbol{S}_B^y$ and $\boldsymbol{S}_W^y$ are computed as follows: 
 
         \begin{align}
-            \boldsymbol{S}_W^y &= \sum_{i=1}^{c}\sum_{k=1}^{n_{i}}(y_{ik}-\boldsymbol{\mu}_i)(y_{ik}-\boldsymbol{\mu}_i)^T \label{eq:LDA_Sw_y}\\
-            \boldsymbol{S}_B^y &= \sum_{i=1}^{c}n_i(\boldsymbol{\mu}_i - \boldsymbol{\mu})(\boldsymbol{\mu}_i - \boldsymbol{\mu})^T \label{eq:LDA_Sb_y}
+            \boldsymbol{S}_W^y &= \sum_{i=1}^{c}\sum_{k=1}^{n_{i}}(y_{ik}-\mu_i)(y_{ik}-\mu_i)^T \label{eq:LDA_Sw_y}\\
+            \boldsymbol{S}_B^y &= \sum_{i=1}^{c}n_i(\mu_i - \mu)(\mu_i - \mu)^T \label{eq:LDA_Sb_y}
         \end{align}
 
-        where $\boldsymbol{\mu}_i=\frac{1}{n_i}{\sum_{k=1}^{n_{i}}}{\boldsymbol{y}_{ik}}$ is the mean of all samples of the $i^{th}$ class in the lower dimensional space; $\boldsymbol{\mu}=\frac{1}{n}\sum_{i=1}^{c}{\sum_{k=1}^{n_{i}}{\boldsymbol{y}_{ik}}}$ is the mean of all samples of all classes; $n=\sum_{i=1}^{c}n_i$ is the total number of data samples.
+        where $\mu_i=\frac{1}{n_i}{\sum_{k=1}^{n_{i}}}{y_{ik}}$ is the mean of all samples of the $i^{th}$ class in the lower dimensional space; $\mu=\frac{1}{n}\sum_{i=1}^{c}{\sum_{k=1}^{n_{i}}{y_{ik}}}$ is the mean of all samples of all classes; $n=\sum_{i=1}^{c}n_i$ is the total number of data samples.
         The between-class $\boldsymbol{S}_B^y$ and within-class $\boldsymbol{S}_W^y$ covariance matrices in new dimension are not known yet but can be formulated as the linearly transformed versions of their counterparts $\boldsymbol{S}_B^x$ and $\boldsymbol{S}_W^x$ in original dimension.
 
         \begin{align}
@@ -22,11 +23,11 @@
             \boldsymbol{S}_B^y &= \omega^T\boldsymbol{S}_B^x\omega
         \end{align}
 
-        $\boldsymbol{S}_B^x$ and $\boldsymbol{S}_W^x$ are easily calculable as follow:
+        $\boldsymbol{S}_B^x$ and $\boldsymbol{S}_W^x$ are simply calculable as follow:
 
         \begin{align}
-            \boldsymbol{S}_W^x &= \sum_{i=1}^{c}\sum_{k=1}^{n_{i}}(x_{ik}-\boldsymbol{\mu}_i^{(x)})(x_{ik}-\boldsymbol{\mu}_i^{(x)})^T \label{eq:LDA_Sw_x}\\
-            \boldsymbol{S}_B^x &= \sum_{i=1}^{c}n_i(\boldsymbol{\mu}_i^{(x)} - \boldsymbol{\mu}^{(x)})(\boldsymbol{\mu}_i^{(x)} - \boldsymbol{\mu}^{(x)})^T \label{eq:LDA_Sb_x}
+            \boldsymbol{S}_W^x &= \sum_{i=1}^{c}\sum_{k=1}^{n_{i}}(x_{ik}-\mu_i^{(x)})(x_{ik}-\mu_i^{(x)})^T \label{eq:LDA_Sw_x}\\
+            \boldsymbol{S}_B^x &= \sum_{i=1}^{c}n_i(\mu_i^{(x)} - \mu^{(x)})(\mu_i^{(x)} - \mu^{(x)})^T \label{eq:LDA_Sb_x}
         \end{align}
 
         Then the objective function is formulated by a Rayleigh quotient:
@@ -42,7 +43,15 @@
             \boldsymbol{S}_W^x\omega = \lambda\boldsymbol{S}_B^x\omega
         \end{equation}
 
-        where $\lambda$ represents the eigenvalues of the transformation matrix $\omega$. The analytical solution of $\boldsymbol{\omega}^*$ is optained by calculating the eigenvectors $V = \{v_1,v_2,...,v_m\}$ sorted by the scalar values of corresponding eigenvalues $\lambda = \{\lambda_1,\lambda_2,...,\lambda_m\}$ of the matrix $\boldsymbol{S} = {\boldsymbol{S}_W^x}^{-1}\boldsymbol{S}_B^x$.
+        where $\lambda$ represents the eigenvalues of the transformation matrix $\omega$. The analytical solution of $\boldsymbol{\omega}^*$ is a $(d^x \times d^y)$ matrix optained by calculating the eigenvectors $V = \{v_1,v_2,...,v_{d^x}\}$ sorted by the scalar values of corresponding eigenvalues $\lambda = \{\lambda_1,\lambda_2,...,\lambda_{d^x}\}$ of the matrix $\boldsymbol{S} = {\boldsymbol{S}_W^x}^{-1}\boldsymbol{S}_B^x$, then slice it till the largest $d^y$ element as illustrated in Figure \ref{fig:lda_solution}.
+
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.4\linewidth]{figs/lda_solution.png}
+            \caption{Analytical solution of LDA.}
+            %\vspace{-0.3cm}
+            \label{fig:lda_solution}
+        \end{figure}
 
     \subsubsection{Pairwise-covariance linear discriminant analysis}
         Pairwise-covariance linear discriminant analysis (pc-LDA) is an extension of LDA introduced in \cite{kong2014pairwise} that overcomes it's drawbacks by formulating pairwise distances between pairs of classes.
