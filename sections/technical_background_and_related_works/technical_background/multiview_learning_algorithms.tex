@@ -26,13 +26,7 @@
             \boldsymbol{S}_W^y &= W^T \boldsymbol{S}_W^x W = W^T\left[X\left(\boldsymbol{I} - \boldsymbol{E}\right)X^T\right]W \label{eq:mvda_Sw_vec} \\
             \boldsymbol{S}_B^y &= W^T \boldsymbol{S}_B^x W = W^T\left[X\left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right)X^T\right]W \label{eq:mvda_Sb_vec}
         \end{align}
-        where $W = \{\omega_1,\omega_2,...,\omega_v\}$ is concatenation of transformation vectors of all views; $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ is identity matrix; $\boldsymbol{\mathbbm{1}} \in \mathbb{R}^{n\times n}$ is matrix of ones; $\boldsymbol{E} \in \mathbb{R}^{n\times n}$ is a square matrix whose elements satisfy:
-        \begin{equation}
-            \boldsymbol{E}_{(k,l)} = \left\{\begin{array}{lr}
-                \frac{1}{n_i}, & \text{if } class(x_k) = class(x_l) = i\\
-                0, & \text{otherwise}
-                \end{array}\right\}
-        \end{equation}
+        where $W = \{\omega_1,\omega_2,...,\omega_v\}$ is concatenation of transformation vectors of all views; $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ is identity matrix; $\boldsymbol{\mathbbm{1}} \in \mathbb{R}^{n\times n}$ is matrix of ones; $\boldsymbol{E} \in \mathbb{R}^{n\times n}$ is a square matrix whose definition will be given in \nameref{chap:appendix}.
 
         Then the objective function is formulated by a Rayleigh quotient:
 
@@ -60,41 +54,41 @@
         In \cite{kan2016multi}, the authors observed that as multiple views correspond to the same objects, there should be some correspondence between multiple views.
         They then introduce a view consistency constraint into the objective function, that means if $X_j, X_r$ are observed at $j^{th}$ and $r^{th}$ views, there exists a certain transformation $\boldsymbol{R}$ such that $X_j = \boldsymbol{R}X_r$.
         As a result, the transformations obtained from two views (i.e. the projection of features extracted from singe view to common view) should have similar relationship: ${\omega}_j = \boldsymbol{R}{\omega}_r$.
-        Let's define $\beta_i$ that captures the structure of the transformation ${\omega}_i$.
+        Let's define $\boldsymbol{\beta}_j$ that captures the structure of the transformation ${\omega}_j$.
 
         \begin{equation}
-            \omega_i = X_i\beta_i
+            \omega_j = X_j\boldsymbol{\beta}_j
             \label{eq:MvDA-vc_beta}
         \end{equation}
 
-        Then the $\beta_j$ and $\beta_r$ capturing the structures of two transformations of two views $j$ and $r$ should be identical ${\beta}_j = {\beta}_r$.
+        Then the $\boldsymbol{\beta}_j$ and $\boldsymbol{\beta}_r$ capturing the structures of two transformations of two views $j$ and $r$ should be identical ${\boldsymbol{\beta}}_j = {\boldsymbol{\beta}}_r$.
 
-        Generalizing to $v$ views, suppose that ${\beta}_j, j=(1,..,v)$ captures the structures of $v$ transformations ${w}_j$.
-        Following the above observation, the $\beta_r, r=(1,..,v)$ should resemble mutually.
-        That means the similarity between the pair of $\beta_j$ and $\beta_r$ should be minimized.
+        Generalizing to $v$ views, suppose that ${\boldsymbol{\beta}}_j, j=(1,..,v)$ captures the structures of $v$ transformations ${w}_j$.
+        Following the above observation, the $\boldsymbol{\beta}_r, r=(1,..,v)$ should resemble mutually.
+        That means the similarity between the pair of $\boldsymbol{\beta}_j$ and $\boldsymbol{\beta}_r$ should be minimized.
         The objective of view-consistency is defined as:
 
         \begin{equation}
-            \boldsymbol{O}_{view-consistency} = \sum_{j=1}^{v}\sum_{r=1}^{v}\left|\left|\beta_j - \beta_r\right|\right|_2^2
+            \boldsymbol{O}_{view-consistency} = \sum_{j=1}^{v}\sum_{r=1}^{v}\left|\left|\boldsymbol{\beta}_j - \boldsymbol{\beta}_r\right|\right|_2^2
             \label{eq:MvDA-vc_vc}
         \end{equation}
 
         From Equation \eqref{eq:MvDA-vc_beta}, we have:
 
         \begin{equation}
-            \beta_i = {\left(X_i^{T}X_i\right)}^{-1}X_i^{T}\omega_i \triangleq \boldsymbol{P}_iw_i
+            \boldsymbol{\beta}_j = {\left(X_j^T X_j\right)}^{-1}X_j^T\omega_j \triangleq \boldsymbol{P}_j w_j
         \end{equation}
 
         Replacing in Equation \eqref{eq:MvDA-vc_vc} we can reformulate it as:
 
         \begin{equation}
-            \sum_{j,r=1}^{v}||\beta_j - \beta_r||_2^2 = trace\left(W^{T}\boldsymbol{P}^{T}\left(2v\boldsymbol{I} - 2\boldsymbol{\widehat{I}}\right)\boldsymbol{P}W\right)
+            \sum_{j,r=1}^{v}||\boldsymbol{\beta}_j - \boldsymbol{\beta}_r||_2^2 = trace\left(W^{T}\boldsymbol{P}^{T}\left(2v\boldsymbol{I} - 2\boldsymbol{\widehat{I}}\right)\boldsymbol{P}W\right)
         \end{equation}
         where $\boldsymbol{P} = \{\boldsymbol{P}_1,\boldsymbol{P}_2,...,\boldsymbol{P}_v\}$; $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ is identity matrix; $\boldsymbol{\widehat{I}} \in \mathbb{R}^{n\times n}$ is grid stack of identity matrices $I \in \mathbb{R}^{\frac{n}{v}\times\frac{n}{v}}$.
         This term is called in \cite{kan2016multi} {\itshape view consistency} and will be added to the denominator of Equation \eqref{eq:MvDA} for minimization.
 
         \begin{align}
-            (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) &= \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y) + \alpha\sum_{j,r=1}^{v}||\beta_j - \beta_r||_2^2}\\
+            (\boldsymbol{\omega}_1^*,\boldsymbol{\omega}_2^*, ..., \boldsymbol{\omega}_v^*) &= \operatorname*{argmax}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}\frac{trace({S}_B^y)}{trace({S}_W^y) + \alpha\sum_{j,r=1}^{v}||\boldsymbol{\beta}_j - \boldsymbol{\beta}_r||_2^2}\\
             \boldsymbol{W}^* &= \operatorname*{argmax}_{\boldsymbol{W}}\frac{trace\left(W^{T}\left[X\left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right)X^{T}\right]W\right)}{trace\left(W^{T}\left[X\left(\boldsymbol{I} - \boldsymbol{E}\right)X^{T} + 2\alpha\boldsymbol{P}^T\left(v\boldsymbol{I} - \boldsymbol{\widehat{I}}\right)\boldsymbol{P}\right]W\right)}
             \label{eq:MvDA-vc}
         \end{align}

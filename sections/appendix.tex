@@ -4,15 +4,32 @@
 \ihead[]{Appendix}
 \ohead[]{\pagemark}
 \begin{appendix}
-\chapter{Appendix}
+\chapter{Appendix} \label{chap:appendix}
 
-\section{Derivation}\label{app:derivation}
+\section{Derivation} \label{app:derivation}
 
-We define the class vector $e_i \in \mathbb{R}^{\frac{n}{v}\times 1}$ which has $k^{th}$ element ${e_i}_{(k)} = 1$ if $class(x_k) = i$ and ${e_i}_{(k)} = 0$ otherwise.
-It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
+This chapter supplies the expansion formulas of equations regarding multi-view analysis algorithms mentioned in this thesis, including MvDA, MvDA-vc and the proposed pc-MvDA.
+
+For easy follow-up, let us briefly reduplicate the definitions and notations that will be used.
+$X = \left[X_1, X_2, ..., X_v\right] = \{x_{ijk}|i=(1,..,c);j = (1,..,v);k=(1,..,n_{ij})\}$ and $Y = \left[Y_1, Y_2, ..., Y_v\right] = \{y_{ijk} = w_j^T x_{ijk}|i=(1,..,c); j=(1,..,v); k=(1,...,n_{ij})\}$ stand for the $v$-view dataset of $c$ classes and $n$ samples before and after projection respectively.
+The mean of dataset is designated with $\mu$.
+$W = \left[\omega_1^T, \omega_2^T, ..., \omega_v^T\right]$ are $v$ transformations learnt for each view by solving an optimization problem that minimizes within-class scatter matrix $\boldsymbol{S}^y_W$ and maximizes between-class scatter matrix $\boldsymbol{S}^y_B$.
+Here the ubiquitous subscripts $i, a, b$ denote class, $j, r$ denote view and $k$ denotes index; while the less-frequently used superscripts $x$ and $y$ allude the original or transformed common dimension respectively of the corresponding term.
+
+Supposing data samples from all views are aligned identically, in essence, the $k^{th}$ sample of $X_j$ is the common component of $k^{th}$ sample of $X_r$ $\forall j, r \in (1, 2, ..., v)$.
+In addition to the aformentioned notations, we define the class vector $e_i \in \mathbb{R}^{\frac{n}{v}\times 1}$ of class $i$, which has $k^{th}$ element ${e_i}_{(k)} = 1$ if $class(x_k) = i$ and ${e_i}_{(k)} = 0$ otherwise.
+It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones as each sample strictly belongs to one class.
+
+By using class vector $e_i$ as mask over $X_j$, mean of class $i$ in original dimension of view $j$ can be denoted as:
+\begin{equation}
+    \mu^{(x)}_{ij} = \frac{1}{n_{ij}}X_j e_i
+    \label{eq:mean_from_class_vector}
+\end{equation}
 
 \subsection{Derivation of \texorpdfstring{$\boldsymbol{S}^y_W$}{intra-class} and \texorpdfstring{$\boldsymbol{S}^y_B$}{inter-class} scatter matrices in MvDA} \label{subsec:derivation_mvda}
+    The notations of $\boldsymbol{S}^y_W$ and $\boldsymbol{S}^y_B$ used in this thesis slightly differ from those supplemented in the original publication \cite{kan2015multi} in order to derive the pre-transformed version $\boldsymbol{S}^x_W$ and $\boldsymbol{S}^x_B$ and thus requires extra reformulation from the step where we can subtitute \eqref{eq:mean_from_class_vector} in.
 
+    The within-class scatter matrix $\boldsymbol{S}^y_W$ of MvDA in Equation \eqref{eq:MvDA_Sw} is expanded as follows:
     \begin{equation}
         \begin{split}
             \boldsymbol{S}^y_W &= \sum_{i=1}^{c}\sum_{j=1}^{v}\sum_{k=1}^{n_{ij}}(y_{ijk}-\mu_i)(y_{ijk}-\mu_i)^T \\
@@ -26,7 +43,8 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
             &= \sum_{j=1}^{v}\omega_j^T X_j I X_j^T\omega_j - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j\left(\sum_{i=1}^{c}\frac{1}{n_i}e_i e_i^T\right)X_r^T\omega_r \\
             &= \sum_{j=1}^{v}\omega_j^T X_j I X_j^T\omega_j - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j E X_r^T\omega_r \\
             &= W^T X \boldsymbol{I} X^T W - W^T X \boldsymbol{E} X^T W \\
-            &= W^T X \left(\boldsymbol{I} - \boldsymbol{E}\right) X^T W
+            &= W^T X \left(\boldsymbol{I} - \boldsymbol{E}\right) X^T W \\
+            \Rightarrow \boldsymbol{S}^x_W &= X \left(\boldsymbol{I} - \boldsymbol{E}\right) X^T
         \end{split}
         \label{eq:mvda_Sw_derivation}
     \end{equation}
@@ -42,6 +60,12 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
         \boldsymbol{E} = \left[\begin{matrix}E&E&\cdots&E\\E&E&\cdots&E\\\vdots&\vdots&\ddots&\vdots\\E&E&\cdots&E\\\end{matrix}\right]
     \end{equation}
 
+    Using the distributivity identity of summation, it is easy to prove that:
+    \begin{equation}
+        \sum_{a=1}^{c}\sum_{b=1}^{c}e_a e_b^T = \left(\sum_{i=1}^{c}e_i\right)\left(\sum_{i=1}^{c}e_i^T\right) = ee^T
+    \end{equation}
+    where $e$ is a vector of ones, hence, it's product results in a square matrix of ones.
+    Then, the between-class scatter matrix $\boldsymbol{S}^y_B$ of MvDA in Equation \eqref{eq:MvDA_Sb} can be expanded as follows:
     \begin{equation}
         \begin{split}
             \boldsymbol{S}^y_B &= \sum_{i=1}^{c}n_i\left(\mu_i - \mu\right)\left(\mu_i - \mu\right)^T \\
@@ -55,9 +79,10 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
             &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T\left(\sum_{i=1}^{c}\frac{n_{ij}n_{ir}}{n_i}\left(\frac{1}{n_{ij}}X_j e_i\right)\left(\frac{1}{n_{ir}}X_r e_i\right)^T\right)\omega_r \\
             &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T\left(\sum_{a=1}^{c}\sum_{b=1}^{c}\frac{n_{aj}n_{br}}{n}\left(\frac{1}{n_{aj}}X_j e_a\right)\left(\frac{1}{n_{br}}X_r e_b\right)\right)\omega_r \\
             &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j\left(\sum_{i=1}^{c}\frac{1}{n_i}e_i e_i^T\right)X_r^T\omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j\left(\sum_{a=1}^{c}\sum_{b=1}^{c}\frac{1}{n}e_a e_b^T\right)X_r^T\omega_r \\
-            &= \sum_{j=1}^{v}\sum_{r=1}^{v} \omega_j^T X_j E X_r^T \omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v} \omega_j^T X_j \mathbbm{1} X_r^T \omega_r \\
-            &= W^T X \boldsymbol{E} X^T W - W^T X \boldsymbol{\mathbbm{1}} X^T W \\
-            &= W^T X \left(\boldsymbol{E} - \boldsymbol{\mathbbm{1}}\right) X^T W
+            &= \sum_{j=1}^{v}\sum_{r=1}^{v} \omega_j^T X_j E X_r^T \omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v} \omega_j^T X_j \frac{1}{n}\mathbbm{1} X_r^T \omega_r \\
+            &= W^T X \boldsymbol{E} X^T W - W^T X \frac{1}{n}\boldsymbol{\mathbbm{1}} X^T W \\
+            &= W^T X \left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right) X^T W \\
+            \Rightarrow \boldsymbol{S}^x_B &= X \left(\boldsymbol{E} - \frac{1}{n}\boldsymbol{\mathbbm{1}}\right) X^T
         \end{split}
         \label{eq:mvda_Sb_derivation}
     \end{equation}
@@ -65,18 +90,19 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
 
 \subsection{Derivation of \texorpdfstring{$\boldsymbol{O}_{view-consistency}$}{view-consistency term} in MvDA-vc} \label{subsec:derivation_mvdavc}
 
+    The view-consistency objective of MvDA-vc in Equation \eqref{eq:MvDA-vc_vc} is expanded as follows:
     \begin{equation}
         \begin{split}
-            \boldsymbol{O}_{view-consistency} &= \sum_{j=1}^{v}\sum_{r=1}^{v}\left|\left|\beta_j - \beta_r\right|\right|_2^2 \\
-            &= \sum_{j=1}^{v}\sum_{r=1}^{v}\left(\beta_j^T\beta_j - \beta_j^T\beta_r - \beta_r^T\beta_j + \beta_r^T\beta_r\right) \\
-            &= \sum_{j=1}^{v}\sum_{r=1}^{v}\left(2\beta_j^T\beta_j - 2\beta_j^T\beta_r\right) \\
+            \boldsymbol{O}_{view-consistency} &= \sum_{j=1}^{v}\sum_{r=1}^{v}\left|\left|\boldsymbol{\beta}_j - \boldsymbol{\beta}_r\right|\right|_2^2 \\
+            &= \sum_{j=1}^{v}\sum_{r=1}^{v}\left(\boldsymbol{\beta}_j^T\boldsymbol{\beta}_j - \boldsymbol{\beta}_j^T\boldsymbol{\beta}_r - \boldsymbol{\beta}_r^T\boldsymbol{\beta}_j + \boldsymbol{\beta}_r^T\boldsymbol{\beta}_r\right) \\
+            &= \sum_{j=1}^{v}\sum_{r=1}^{v}\left(2\boldsymbol{\beta}_j^T\boldsymbol{\beta}_j - 2\boldsymbol{\beta}_j^T\boldsymbol{\beta}_r\right) \\
             &= \sum_{j=1}^{v}2v\omega_j^T\boldsymbol{P}_j I \boldsymbol{P}_j^T\omega_j - \sum_{j=1}^{v}\sum_{r=1}^{v}2\omega_j^T\boldsymbol{P}_j I \boldsymbol{P}_r^T\omega_r \\
             &= W^T \boldsymbol{P}^T \left(2v\boldsymbol{I}\right) \boldsymbol{P} W - W^T \boldsymbol{P}^T \left(2\boldsymbol{\widehat{I}}\right) \boldsymbol{P} W \\
             &= W^T \boldsymbol{P}^T \left(2v\boldsymbol{I} - 2\boldsymbol{\widehat{I}}\right) \boldsymbol{P} W
         \end{split}
         \label{eq:mvdavc_vc_derivation}
     \end{equation}
-    where $\beta_j = \boldsymbol{P}_j\omega_j$ and $\boldsymbol{P}_j = \left(X_j^T X_j\right)^{-1}X_j^T$ as defined in Section \ref{subsubsec:mvdavc}; $I \in \mathbb{R}^{\frac{n}{v}\times \frac{n}{v}}$ and $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ are defined in \ref{subsec:derivation_mvda}, $\boldsymbol{\widehat{I}} = \left[I\right]_{v\times v} \in \mathbb{R}^{n\times n}$ is $v\times v$ grid stack of $I$:
+    where $\boldsymbol{\beta}_j = \boldsymbol{P}_j\omega_j$ and $\boldsymbol{P}_j = \left(X_j^T X_j\right)^{-1}X_j^T$ as defined in Section \ref{subsubsec:mvdavc}; $I \in \mathbb{R}^{\frac{n}{v}\times \frac{n}{v}}$ and $\boldsymbol{I} \in \mathbb{R}^{n\times n}$ are defined in \ref{subsec:derivation_mvda}, $\boldsymbol{\widehat{I}} = \left[I\right]_{v\times v} \in \mathbb{R}^{n\times n}$ is $v\times v$ grid stack of $I$:
     \begin{equation}
         \boldsymbol{\widehat{I}} = \left[\begin{matrix}I&I&\cdots&I\\I&I&\cdots&I\\\vdots&\vdots&\ddots&\vdots\\I&I&\cdots&I\\\end{matrix}\right]
     \end{equation}
@@ -91,7 +117,8 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
             &= \sum_{j=1}^{v}\omega_j^T\left(\sum_{k=1}^{n_ij}x_{ijk}x_{ijk}^T\right)\omega_j - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j\left(\frac{1}{n_i} e_i e_i^T\right)X_r^T\omega_r \\
             &= \sum_{j=1}^{v}\omega_j^T X_j I_i X_j^T\omega_j - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j E X_r^T\omega_r \\
             &= W^T X \boldsymbol{I}_i X^T W - W^T X \boldsymbol{E} X^T W \\
-            &= W^T X \left(\boldsymbol{I}_i - \boldsymbol{E}\right) X^T W
+            &= W^T X \left(\boldsymbol{I}_i - \boldsymbol{E}\right) X^T W \\
+            \Rightarrow {\boldsymbol{S}_W^x}_i &= X \left(\boldsymbol{I}_i - \boldsymbol{E}\right) X^T
         \end{split}
         \label{eq:pcmvda_Sw_i_derivation}
     \end{equation}
@@ -107,18 +134,21 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
         \boldsymbol{I}_{i} = \left[\begin{matrix}I_i&0&\cdots&0\\0&I_i&\cdots&0\\\vdots&\vdots&\ddots&\vdots\\0&0&\cdots&I_i\\\end{matrix}\right]
     \end{equation}
 
-    Subtituing \eqref{eq:pcmvda_Sw_i_derivation} and \eqref{eq:mvda_Sw_derivation} in \eqref{eq:pcmvda_Sw_ab} we get:
+    Subtituing \eqref{eq:pcmvda_Sw_i_derivation} and \eqref{eq:mvda_Sw_derivation} in Equation \eqref{eq:pcmvda_Sw_ab} we get the paired intra-class ${\boldsymbol{S}_W^y}_{ab}$ of pc-MvDA:
     \begin{equation}
         \begin{split}
             {\boldsymbol{S}_W^y}_{ab} &= \beta\frac{n_a{\boldsymbol{S}_W^y}_a + n_b{\boldsymbol{S}_W^y}_b}{n_a + n_b} + (1 - \beta)\boldsymbol{S}_W^y \\
-            &= \beta\frac{n_a W^T X \left(\boldsymbol{I}_a - \boldsymbol{E}\right) X^T W + n_b W^T X \left(\boldsymbol{I}_b - \boldsymbol{E}\right) X^T W}{n_a + n_b} + (1 - \beta)W^T X \left(\boldsymbol{I} - \boldsymbol{E}\right) X^T W \\
+            &= \beta\frac{n_a W^T X \left(\boldsymbol{I}_a - \boldsymbol{E}\right) X^T W + n_b W^T X \left(\boldsymbol{I}_b - \boldsymbol{E}\right) X^T W}{n_a + n_b} \\
+            &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ + (1 - \beta)W^T X \left(\boldsymbol{I} - \boldsymbol{E}\right) X^T W \\
             &= W^T X \left(\beta\frac{n_a\left(\boldsymbol{I}_a - \boldsymbol{E}\right) + n_b\left(\boldsymbol{I}_b - \boldsymbol{E}\right)}{n_a + n_b} + (1 - \beta)\left(\boldsymbol{I} - \boldsymbol{E}\right)\right) X^T W \\
-            &= W^T X \left(\beta\frac{n_a\boldsymbol{I}_a + n_b\boldsymbol{I}_b}{n_a + n_b} + (1 - \beta)\boldsymbol{I} - \boldsymbol{E}\right) X^T W
+            &= W^T X \left(\beta\frac{n_a\boldsymbol{I}_a + n_b\boldsymbol{I}_b}{n_a + n_b} + (1 - \beta)\boldsymbol{I} - \boldsymbol{E}\right) X^T W \\
+           \Rightarrow {\boldsymbol{S}_W^x}_{ab} &= X \left(\beta\frac{n_a\boldsymbol{I}_a + n_b\boldsymbol{I}_b}{n_a + n_b} + (1 - \beta)\boldsymbol{I} - \boldsymbol{E}\right) X^T
         \end{split}
         \label{eq:pcmvda_Sw_ab_derivation}
     \end{equation}
     where $0 \leq \beta \leq 1$ is a hyperparameter.
 
+    And finally, the paired between-class scatter matrix ${\boldsymbol{S}_B^y}_{ab}$ in Equation \eqref{eq:pcmvda_Sb_ab} is expanded as follows:
     \begin{equation}
         \begin{split}
             {\boldsymbol{S}_B^y}_{ab} &= {\left(\mu_a-\mu_b\right)\left(\mu_a-\mu_b\right)^T} \\
@@ -131,7 +161,8 @@ It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones.
             &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \left(\frac{1}{n_a^2}e_a e_a^T + \frac{1}{n_b^2}e_b e_b^T\right) X_r^T\omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \frac{1}{n_a n_b}\left(e_a e_b^T + e_b e_a^T\right) X_r^T\omega_r \\
             &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j E_{ab} X_r^T\omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \tilde{E}_{ab} X_r^T\omega_r \\
             &= W^T X \boldsymbol{E}_{ab} X^T W - W^T X \boldsymbol{\tilde{E}}_{ab} X^T W \\
-            &= W^T X \left(\boldsymbol{E}_{ab} - \boldsymbol{\tilde{E}}_{ab}\right) X^T W
+            &= W^T X \left(\boldsymbol{E}_{ab} - \boldsymbol{\tilde{E}}_{ab}\right) X^T W \\
+        \Rightarrow {\boldsymbol{S}_B^x}_{ab} &= X \left(\boldsymbol{E}_{ab} - \boldsymbol{\tilde{E}}_{ab}\right) X^T
         \end{split}
         \label{eq:pcmvda_Sb_i_derivation}
     \end{equation}

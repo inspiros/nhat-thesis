@@ -64,29 +64,28 @@
         \label{tab:fisher_criterias}
         \end{table}
 
-        % \begin{equation}
-        %     J_1=\frac{tr(S_B)}{tr(S_W)};\quad 
-        %     J_2=tr\left(\frac{S_B}{S_W}\right);\quad
-        %     J_3=\left|\left|\frac{S_B}{S_W}\right|\right|;\quad
-        %     J_4=\frac{det(S_B)}{det(S_W)}
-        % \end{equation}
-
         In this thesis, I choosed the former Fisher loss $J_1$ as the ratio of traces is computationally cheapest.
+        Gradient descent conventionally minimizes an objective instead of maximizing, hence, the final objective is reversed to become a minimization problem:
+
+        \begin{equation}
+            J_1=\frac{tr(\boldsymbol{S}_W)}{tr(\boldsymbol{S}_B)}
+        \end{equation}
+
+        Swapping the numerator and denominator $\sfrac{tr(S_W)}{tr(S_B)}$ instead of solving a negative problem $-\sfrac{tr(S_B)}{tr(S_W)}$ does not provide any mathematical advantages, but helps us easily supervise the convergence of model when the loss approaching zero rather than an perpetually reducing negative value.
         Comparing to the objective of pc-LDA in Equation \eqref{eq:pc-LDA}, the proposed model is obviously more efficient since it contains only simple operators and the need to inverse a singular-prone matrix is negated.
         Therefore, it is better fit in the scenario where we want to train the model multiple iterations over multi-view high dimensional output.
 
         The final objective function of pc-MvDA is sum of all pairwise Fisher criteria with normalized weights:
         \begin{equation}
-            \operatorname*{min}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}{J}=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\frac{n_an_b}{n_{cc}^2}{\left[{\frac{trace\left({\boldsymbol{S}_W^y}_{ab}\right)}{trace\left({\boldsymbol{S}_B^y}_{ab}\right)}}\right]}^{q}}
+            \operatorname*{min}_{\boldsymbol{\omega}_1, \boldsymbol{\omega}_2,..., \boldsymbol{\omega}_v}{J}=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\frac{n_an_b}{n^2}{\left[{\frac{trace\left({\boldsymbol{S}_W^y}_{ab}\right)}{trace\left({\boldsymbol{S}_B^y}_{ab}\right)}}\right]}^{q}}
             \label{eq:pc-MvDA}
         \end{equation}
-        where $n_{cc} = \frac{n}{v}$ is the number of common components as coined in \cite{you2019multi} or simply number of samples in each view. This added normalization term assures that the objective does not depend on size of dataset.
+        The normalization term $\sfrac{1}{n^2}$ assures that the objective does not depend on size of dataset.
 
-        Let's look at the Figure \ref{fig:frw}, the nominator of MvDA(-vc) $\boldsymbol{S}_B^y$ is the sum of all distances from mean of every class $\mu_i$, $i = {1,...,c}$ to the mean of all classes $\mu$.
-        This helps to push classes far away from the global mean (the dotted green lines in Figure \ref{fig:frw}).
-        However, it might not ensure that the classes would be separated from each other (Figure \ref{fig:pc-MvDA}a).
-        In this work, pairwise distance is taken into account and integrated in an multi-view framework (the dotted violet lines in Figure \ref{fig:frw}).
-        Thank to this, different classes will be more discriminated (Figure \ref{fig:pc-MvDA}b).
+        % Let's look at the Figure \ref{fig:frw}, the numerator of MvDA(-vc) $\boldsymbol{S}_B^y$ is the sum of all distances from mean of every class $\mu_i$ to the global mean $\mu$.
+        % This helps to push classes far away from the global mean but might not ensure that the classes would be separated from each other (Figure \ref{fig:pc-MvDA}a).
+        % In this work, pairwise distance is taken into account and integrated in an multi-view framework (the dotted violet lines in Figure \ref{fig:frw}).
+        % Thank to this, different classes will be more discriminated (Figure \ref{fig:pc-MvDA}b).
         % The algorithm for solving pc-MvDA is presented in supplemental materials. 
 
     \paragraph{Illustrative examples}
@@ -173,13 +172,13 @@
 
 
     \paragraph{Algorithm to solve pc-MvDA}
-        As the proposed objective does not match any optimization form of generalized eigenvalue problems, gradient descent algorithm is used to solve pc-MvDA. This approach also allow the algorithm to update incrementally even in higher dimensional data where the computations of matrix inversion and eigenvectors are not conducive. The derivative of Equation \eqref{eq:pc-MvDA} is:
+        As the proposed objective does not match any optimization form of generalized eigenvalue problems, gradient descent algorithm is used to solve pc-MvDA. This approach also allow the algorithm to update incrementally even in higher dimensional data where the computation of matrix inversion and eigendecomposition are not conducive. The derivative of Equation \eqref{eq:pc-MvDA} is:
 
         \begin{equation}
-            \frac{\partial J\left(W\right)}{\partial W}=-\sum_{a<b}^{c}{\frac{qn_an_b}{{n_{cc}}^2{J_{ab}\left(W\right)}^{q+1}}\frac{\partial J_{ab}\left(W\right)}{\partial W}}
+            \frac{\partial J\left(W\right)}{\partial W}=-\sum_{a<b}^{c}{\frac{q n_a n_b}{n^2{J_{ab}\left(W\right)}^{q+1}}\frac{\partial J_{ab}\left(W\right)}{\partial W}}
         \end{equation}
 
-        where $J_{ab}\left(W\right)={tr\left({\boldsymbol{S}_B^y}_{ab}\right)}/{tr\left({\boldsymbol{S}_W^y}_{ab}\right)}$ is the Fisher loss of class pair $a$ and $b$. Its gradient is computed using the funky trace derivative and quotient rule:
+        where $J_{ab}\left(W\right)=\sfrac{tr\left({\boldsymbol{S}_B^y}_{ab}\right)}{tr\left({\boldsymbol{S}_W^y}_{ab}\right)}$ is the Fisher loss of class pair $a$ and $b$. Its gradient is computed using the funky trace derivative and quotient rule:
 
         \begin{equation}
             \frac{\partial J_{ab}\left(W\right)}{\partial W}=\frac{tr\left({\boldsymbol{S}_W^y}_{ab}\right)W^T\left({\boldsymbol{S}_B^x}_{ab}+{{\boldsymbol{S}_B^x}_{ab}}^T\right)-tr\left({\boldsymbol{S}_B^y}_{ab}\right)W^T\left({\boldsymbol{S}_W^x}_{ab}+{{\boldsymbol{S}_W^x}_{ab}}^T\right)}{{tr\left({\boldsymbol{S}_W^y}_{ab}\right)}^2}
@@ -198,21 +197,7 @@
             {\boldsymbol{S}_W^y}_{i}  &= W^T {\boldsymbol{S}_W^x}_{i} W \ = W^T\left[X\left(\boldsymbol{I}_{i} - \boldsymbol{E}\right)X^T\right]W \label{eq:pcmvda_Sw_i_vec} \\
             {\boldsymbol{S}_B^y}_{ab} &= W^T {\boldsymbol{S}_B^x}_{ab} W = W^T\left[X\left(\boldsymbol{E}_{ab} - \boldsymbol{\tilde{E}}_{ab}\right)X^T\right]W \label{eq:pcmvda_Sb_ab_vec}
         \end{align}
-        where $\boldsymbol{I}_{i}, \boldsymbol{E}_{ab}, \boldsymbol{\tilde{E}}_{ab} \in \mathbb{R}^{n\times n}$ are a square matrices whose elements satisfy:
-        \begin{align}
-            {\boldsymbol{I}_{i}}_{(k,k)} &= \left\{\begin{array}{lr}
-                1, & \text{if } class(x_k) = i \\
-                0, & \text{otherwise}
-                \end{array}\right\} \\
-            {\boldsymbol{E}_{ab}}_{(k,l)} &= \left\{\begin{array}{lr}
-                \frac{1}{{n_i}^2}, & \text{if } class(x_k) = class(x_l) = i \text{ and } i \in \{a, b\} \\
-                0, & \text{otherwise}
-                \end{array}\right\} \\
-            {\boldsymbol{\tilde{E}}_{ab}}_{(k,l)} &= \left\{\begin{array}{lr}
-                \frac{1}{n_a n_b}, & \text{if } i = class(x_k) \neq class(x_l) = j \text{ and } i,j \in \{a, b\} \\
-                0, & \text{otherwise}
-                \end{array}\right\}
-        \end{align}
+        where $\boldsymbol{I}_{i}, \boldsymbol{E}_{ab}, \boldsymbol{\tilde{E}}_{ab} \in \mathbb{R}^{n\times n}$ are a square matrices whose definitions will be given in \nameref{chap:appendix}.
 
         Substitute \eqref{eq:pcmvda_Sw_i_vec} and \eqref{eq:mvda_Sw_vec} in Equation \eqref{eq:pcmvda_Sw_ab} we have:
 
@@ -245,7 +230,7 @@
                     $\boldsymbol{F} = \boldsymbol{F} + n_an_b\nabla J_{ab}/J_{ab}^{(q+1)}$\;
                 }
             }
-            $\nabla J = {-q\boldsymbol{F}}/{n_{cc}^2}$\;
+            $\nabla J = {-q\boldsymbol{F}}/{n^2}$\;
             \Output{$\nabla J$}
             \caption{Computation of $\nabla J\left(W\right)$ (i.e. gradient of Equation \eqref{eq:pc-MvDA})}
             \label{algo:grad_computation}
