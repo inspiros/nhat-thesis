@@ -13,24 +13,10 @@
     This is carried out by learning a set of linear transformations that projects separated view features into a common dimension.
     To this end, Multi-view Discriminant Analysis (MvDA) is adopted.
     However, the original MvDA suffers from odd situations in which the most class-discrepant common space could not be found because its objective is overly concentrated on scattering classes from the global mean but unaware of distance between specific pairs of classes.
-    Therefore, I introduce a pairwise-covariance maximizing extension of MvDA that takes extra-class discriminance into account, namely pc-MvDA.
+    Therefore, we introduce a pairwise-covariance maximizing extension of MvDA that takes extra-class discriminance into account, namely pc-MvDA.
     The novel model also differs in the way that is more favorable for training of high-dimensional multi-view data.
     Experimental results on three datasets (IXMAS, MuHAVI, MICAGes) show the effectiveness of the proposed method.
 
-
-    % Human action recognition (HAR) under different viewpoints is one of the most critical requirement for practical deployment.
-    % In this thesis, I propose a novel method that leverages successful deep features for action representation and multi-view discriminant analysis to make robust HAR under viewpoint change.
-    % Specifically, various deep learning techniques, from 2D CNNs to 3D CNNs are investigated to capture spatial and temporal characteristics of actions at each individual view.
-    % We then build a common space which tries to keep view-invariant features among views.
-    % This is carried out by learning a set of linear transformations that project separated view features to common view space.
-    % To this end, we first adopt Multi-view Discriminant Analysis (MvDA).
-    % We then introduce pairwise-covariance of classes into the objective function that takes extra-class discriminance into account, namely pc-MvDA.
-    % Both separated view features and common view features are integrated in an unified framework.
-    % Two cross-view and multi-view evaluation protocols have been applied.
-    % Experimental results on three datasets (IXMAS, MuHAVI, MICAGes) show that combination of ResNet-50 3D with proposed pc-MvDA gives the highest recognition accuracy in almost cases.
-    % In addition, our proposed Pairwise-Covariance Discriminant Analysis (pc-MvDA) outperforms the original MvDA 5.29\% in average.
-    % Cross-recognition results have been much better than the one without view discriminant analysis.
-    % It demonstrates that practical deployment could be more feasible by using our proposed framework in reality.
 
 \end{abstract}
 

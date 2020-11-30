@@ -1,13 +1,13 @@
 %!TEX root = ../../../main.tex
 
 \subsection{Experimental results on IXMAS dataset}
-    \paragraph{1) Cross-view validation:} In this experiment, I train on data from one view (training view) and testing on data from another view (testing view) then compute the accuracies for two evaluation protocols. Table \ref{tab:cross_p1_ixmas} shows comparative results of using different deep features (C3D, ResNet-50 3D, ResNet-50 RNN, ResNet-50 TA, ResNet-50 AP) and multi-view discriminant analysis techniques (MvDA, MvDA-vc and my proposed pc-MvDA). 
+    \paragraph{1) Cross-view validation:} In this experiment, we train on data from one view (training view) and testing on data from another view (testing view) then compute the accuracies for two evaluation protocols. Table \ref{tab:cross_p1_ixmas} shows comparative results of using different deep features (C3D, ResNet-50 3D, ResNet-50 RNN, ResNet-50 TA, ResNet-50 AP) and multi-view discriminant analysis techniques (MvDA, MvDA-vc and our proposed pc-MvDA). 
 
     With the first evaluation protocol, the proposed pc-MvDA, when combined with deep features, gives mostly best accuracy for both evaluation protocols. With C3D features, accuracy by pc-MvDA (88.43\%) is 6.6\% higher than MvDA (81.84\%). pc-MvDA is even better than MvDA-vc (2.87\%). pc-MvDA achieved higher accuracy (about 6\% higher) than MvDA and MvDA-vc with ResNet-50 TA and ResNet-50 AP features. In average, pc-MvDA is 3.09\% higher than MvDA and 1.4\% higher than MvDA-vc.
     
     \begin{table}[htbp]
     \centering
-    \caption{Cross-view recognition comparison on IXMAS dataset}
+    \caption{Cross-view recognition comparison on IXMAS dataset.}
     \resizebox{0.8\textwidth}{!}{
     \begin{tabular}{|l|c|c|c|c|c|c|}
         \hline
@@ -28,7 +28,7 @@
 
     \begin{table}[htbp]
     \centering
-    \caption{Cross-view recognition results of different features on IXMAS dataset with pc-MvDA method. The result in the bracket are accuracies of using features C3D, ResNet-50 3D, ResNet-50 RNN, ResNet-50 TA, Restnet-50 AP respectively. Each row corresponds to training view (from view C0 to view C3). Each column corresponds to testing view (from view C0 to view C3)}
+    \caption{Cross-view recognition results of different features on IXMAS dataset with pc-MvDA method. The result in the bracket are accuracies of using features C3D, ResNet-50 3D, ResNet-50 RNN, ResNet-50 TA, Restnet-50 AP respectively. Each row corresponds to training view (from view C0 to view C3). Each column corresponds to testing view (from view C0 to view C3).}
     \resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
         \hline
         \backslashbox{Training}{Testing} & C0 & C1 & C2 & C3 \\ \hline
@@ -44,7 +44,7 @@
 
     \begin{table}[htbp]
     \centering
-    \caption{Multi-view recognition comparison on IXMAS dataset}
+    \caption{Multi-view recognition comparison on IXMAS dataset.}
     \resizebox{0.7\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
         \multirow{2}{*}{Deep features}          & \multicolumn{3}{c|}{Protocol 1}   & \multicolumn{3}{c|}{Protocol2}                    \\ \cline{2-7} 
@@ -73,7 +73,7 @@
 
     \begin{table}[htbp]
     \centering
-    \caption{Comparison of proposed methods with SOTA methods on IXMAS dataset according to the second evaluation protocol}
+    \caption{Comparison of proposed methods with SOTA methods on IXMAS dataset according to the second evaluation protocol.}
     \resizebox{0.7\textwidth}{!}{
     \begin{tabular}{|c|c|c|}
     \hline

@@ -27,20 +27,25 @@
         These networks have been successfully deployed for human action and gesture recognition in general, but not investigated yet for cross-view recognition scenarios.
 
         The objective of this thesis focuses on the second stage of the proposed general framework.
-        For building a latent common space, I am inspired by idea of multi-view discriminant analysis (MvDA).
+        For building a latent common space, we are inspired by idea of multi-view discriminant analysis (MvDA).
         This technique has been shown to be efficient for images based tasks, but not deployed for video based tasks and mostly with deep features extracted from videos as input.
         In addition, the MvDA's objective has no explicit constraint to push class centers away from each other.
-        In this step, with idea based on the proposal of a dimensionality reduction algorithm namely pc-LDA, I extend the original MvDA by introducing the pairwise-covariance constraint while modifying the optimization model that could theoretically directed to train the whole framework end-to-end.
-        This helps to make classes to be more separated in the common feature space than using the baseline MvDA.
+        To this end, with idea based on the proposal of a dimensionality reduction algorithm namely pc-LDA, we extend the original MvDA by introducing the pairwise-covariance constraint that helps to make classes to be more separated, while modifying the optimization model that could theoretically directed to train the whole framework end-to-end.
+        % This helps to make classes to be more separated in the common feature space than using the baseline MvDA.
         The new optimization objective is also more efficient than the original conception of pc-LDA in terms of computational complexity.
 
         The main contributions of this thesis are summarized as follows: 
         \begin{itemize}
-            \item Firstly, I improve the MvDA technique by incorporating pairwise-covariance of between-classes that helps to separate classes, resulting in improved performance. The proposed method is called pc-MvDA. When either number of views or dimensionality of input data is large, the optimization problem is harder to be solved, I also propose a modification to the objective of pc-MvDA that facilitates the optimization problem.
+            \item Firstly, investigating various recent deep neural networks for feature extraction.
+            \item Secondly, proposing an extension of MvDA (so-called pc-MvDA) which aims to improve the recognition results.
+            \item Finally, incorporating DNN and MvA in an unified framework and evaluating it on three datasets (IXMAS, MuHAVi, MICAGes).
+            % \item Firstly, we improve the MvDA technique by incorporating pairwise-covariance of between-classes that helps to separate classes, resulting in improved performance. The proposed method is called pc-MvDA. When either number of views or dimensionality of input data is large, the optimization problem is harder to be solved, we also propose a modification to the objective of pc-MvDA that facilitates the optimization problem.
             % \item Secondly, various recent neuronal networks for feature extraction are investigated and incorporated in an unified framework with multi-view analysis algorithms for robust cross-view action and gesture recognition.
-            % \item Finally, I evaluate the proposed framework on three datasets (IXMAS, MuHAVi and MICAGes). The experimental results show improvement of the proposed method compared to state of the art techniques.
-            \item Secondly, I incorporate various investigated neuronal networks and multi-view analysis techniques in an unified framework. Then, I evaluate the framework on three datasets (IXMAS, MuHAVi and MICAGes) and compare them to state of the art approaches. The experimental results show that the proposed pc-MvDA supersede baseline MvDA.
+            % \item Finally, we evaluate the proposed framework on three datasets (IXMAS, MuHAVi and MICAGes). The experimental results show improvement of the proposed method compared to state of the art techniques.
+            % \item Secondly, we incorporate various investigated neuronal networks and multi-view analysis techniques in an unified framework. Then, we evaluate the framework on three datasets (IXMAS, MuHAVi and MICAGes) and compare them to state of the art approaches. The experimental results show that the proposed pc-MvDA supersede baseline MvDA.
         \end{itemize}
+
+        Specifically, where the thesis is based on work done by myself jointly with others, my own contribution focuses on second and third objectives as primary contributor while training process of DNN for feature extraction is largely done with help of co-researcher.
 
     \section{Thesis Outline} \label{sec:intro_outline}
         The thesis is structured into 5 chapters:

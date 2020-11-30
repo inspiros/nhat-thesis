@@ -3,7 +3,7 @@
 \subsection{Pairwise-covariance Multi-view Discriminant Analysis}
     MvDA emphasizes on finding a common space with minimal within-class variation while the distances between class means and global mean are jointly maximized.
     However, the distances between some pairs of classes can be disregarded.
-    In this work, to obtain this property, I modified MvDA with reformulated between and with-in class scatter matrices terms in a pairwise manner.
+    In this work, to obtain this property, we modified MvDA with reformulated between and with-in class scatter matrices terms in a pairwise manner.
     First, let's define a new inter-class scatter matrix formula that takes paired distance into account:
     \begin{equation}
         \boldsymbol{S}_B^y=\sum_{a=1}^{c}\sum_{b=a+1}^{c}{\left(\mu_a-\mu_b\right)\left(\mu_a-\mu_b\right)^T}
@@ -32,7 +32,7 @@
     where $0\le\beta\le1$ is a hyper-parameter for convex regularization between the original global intra-covariance ${\boldsymbol{S}_W^y}$ and the two novel local class covariances ${\boldsymbol{S}_W^y}_a$ and ${\boldsymbol{S}_W^y}_b$.
     This formulation is closer to the value of covariances of both classes than the standard intra-covariance.
 
-    Instead of solving the vanilla generalized eigen value problem for the whole dataset, it is now splitted into sub-problems for each pairs of class $a$ and $b$, in each of which I define the objective distance to be minimized between two corresponding classes.
+    Instead of solving the vanilla generalized eigen value problem for the whole dataset, it is now splitted into sub-problems for each pairs of class $a$ and $b$, in each of which we define the objective distance to be minimized between two corresponding classes.
 
     \paragraph{Difference of the proposed algorithm compared to pairwise-covariance LDA (pc-LDA)}
         In pc-LDA \cite{kong2014pairwise}, the pairs of $a$ and $b$ classes are regarded as two Gaussian distributions $\mathcal{N}_a(\mu_a,{\boldsymbol{S}_W^y}_a), \mathcal{N}_b(\mu_b,{\boldsymbol{S}_W^y}_b)$ and the objective distance between two classes is defined as their Kullback-Leibler divergence \cite{kullback1951}:
@@ -54,7 +54,7 @@
 
         \begin{table}[htbp]
         \centering
-        \caption{Comparison of computational complexity of different notations of Fisher criteria described in \cite{fukunaga1990441}}
+        \caption{Comparison of computational complexity of different notations of Fisher criteria described in \cite{fukunaga1990441}.}
         \begin{tabular}{|c|c|c|c|c|}
             \hline
             \small\textbf{Criteria} & $J_1=\frac{tr(\boldsymbol{S}_B)}{tr(\boldsymbol{S}_W)}$ & $J_2=tr\left(\frac{\boldsymbol{S}_B}{\boldsymbol{S}_W}\right)$ & $J_3=\left|\left|\frac{\boldsymbol{S}_B}{\boldsymbol{S}_W}\right|\right|$ & $J_4=\frac{det(\boldsymbol{S}_B)}{det(\boldsymbol{S}_W)}$ \\ \hline
@@ -64,7 +64,7 @@
         \label{tab:fisher_criterias}
         \end{table}
 
-        In this thesis, I choosed the former Fisher loss $J_1$ as the ratio of traces is computationally cheapest.
+        We choosed the former Fisher loss $J_1$ as the ratio of traces is computationally cheapest.
         Gradient descent conventionally minimizes an objective instead of maximizing, hence, the final objective is reversed to become a minimization problem:
 
         \begin{equation}
@@ -89,7 +89,7 @@
         % The algorithm for solving pc-MvDA is presented in supplemental materials. 
 
     \paragraph{Illustrative examples}
-        I illustrate the advantage of pc-MvDA on artificial datasets.
+        We illustrate the advantage of pc-MvDA on artificial datasets.
         Firstly, using function provided by \textit{scikit-learn} library, we can generate several isotropic Gaussian blobs equal to desired number of classes as data samples from one single view.  % "we" here is intensional.
         To generate other views, one can simply clone and apply translation, point-wise noise and rotation with random orthogonal group multiplication to the samples of first view.
 
@@ -185,7 +185,7 @@
             \label{eq:grad_Jab}
         \end{equation}
 
-        The superscript $x$ replacing $y$ in scatter matrices notations means that they denote the pre-transformed version. With simple algebra, we can rewrite the formulas in matrix multiplication form, separating transformation vectors $\omega_j$ in a concatenated matrix $W$ and a multi-view covariance matrix constructed from $v\times v$ cells, each cell $S^x_{jk}$ stands for the covariance between view $j$ and view $k$.
+        The superscript $x$ replacing $y$ in scatter matrices notations means that they denote the pre-transformed version. With simple algebra, we can rewrite the formulas in matrix multiplication form, separating transformation vectors $\omega_j$ in a concatenated matrix $W$ and a multi-view covariance matrix constructed from $v\times v$ cells, each cell $S^x_{jr}$ stands for the covariance between view $j$ and view $r$.
 
         \begin{equation}
             \boldsymbol{S}^y=W^T\boldsymbol{S}^xW=\left[\begin{matrix}\omega_1^T&\omega_2^T&\cdots&\omega_v^T\\\end{matrix}\right]\left[\begin{matrix}S^x_{11}&S^x_{12}&\cdots&S^x_{1v}\\S^x_{21}&S^x_{22}&\cdots&S^x_{2v}\\\vdots&\vdots&\ddots&\vdots\\S^x_{v1}&S^x_{v2}&\cdots&S^x_{vv}\\\end{matrix}\right]\left[\begin{matrix}\omega_1\\\omega_2\\\vdots\\\omega_v\\\end{matrix}\right]
@@ -237,6 +237,5 @@
         \end{algorithm}
 
         No further constraint is imposed to the proposed model. Although most modern programming frameworks do support the automatic deduction of $\nabla J\left(W\right)$ as backward process of computing the objective $J$, the above algorithm is derived for reimplementation in those that do not (i.e. Matlab).
-        In fact, in my implementation of pc-MvDA in Pytorch, the computation of gradient is handled by automatic differentiation.
-        % I choose Adam as optimizer with learning rate set to $0.01$.
+        In fact, in our implementation of pc-MvDA in Pytorch, the computation of gradient is handled by automatic differentiation.
         To have better starting point and mitigate variances, pc-MvDA is initialized with transformation learnt by MvDA.

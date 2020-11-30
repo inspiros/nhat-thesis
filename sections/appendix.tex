@@ -12,22 +12,22 @@ This chapter supplies the expansion formulas of equations regarding multi-view a
 
 For easy follow-up, let us briefly reduplicate the definitions and notations that will be used.
 $X = \left[X_1, X_2, ..., X_v\right] = \{x_{ijk}|i=(1,..,c);j = (1,..,v);k=(1,..,n_{ij})\}$ and $Y = \left[Y_1, Y_2, ..., Y_v\right] = \{y_{ijk} = w_j^T x_{ijk}|i=(1,..,c); j=(1,..,v); k=(1,...,n_{ij})\}$ stand for the $v$-view dataset of $c$ classes and $n$ samples before and after projection respectively.
-The mean of dataset is designated with $\mu$.
-$W = \left[\omega_1^T, \omega_2^T, ..., \omega_v^T\right]$ are $v$ transformations learnt for each view by solving an optimization problem that minimizes within-class scatter matrix $\boldsymbol{S}^y_W$ and maximizes between-class scatter matrix $\boldsymbol{S}^y_B$.
+The mean of dataset is designated with $\mu = \frac{1}{n}\sum_{i=1}^{c}\sum_{j=1}^{v}\sum_{k=1}^{n_{ij}}y_{ijk}$, mean of class $\mu_{i} = \frac{1}{n_i}\sum_{j=1}^{v}\sum_{k=1}^{n_{ij}}y_{ijk}$ and mean of class in one view $\mu_{ij} = \frac{1}{n_{ij}}\sum_{k=1}^{n_{ij}}y_{ijk}$.
+$W = \left[\omega_1, \omega_2, ..., \omega_v\right]$ are $v$ transformations learnt for each view by solving an optimization problem that minimizes within-class scatter matrix $\boldsymbol{S}^y_W$ and maximizes between-class scatter matrix $\boldsymbol{S}^y_B$.
 Here the ubiquitous subscripts $i, a, b$ denote class, $j, r$ denote view and $k$ denotes index; while the less-frequently used superscripts $x$ and $y$ allude the original or transformed common dimension respectively of the corresponding term.
 
 Supposing data samples from all views are aligned identically, in essence, the $k^{th}$ sample of $X_j$ is the common component of $k^{th}$ sample of $X_r$ $\forall j, r \in (1, 2, ..., v)$.
 In addition to the aformentioned notations, we define the class vector $e_i \in \mathbb{R}^{\frac{n}{v}\times 1}$ of class $i$, which has $k^{th}$ element ${e_i}_{(k)} = 1$ if $class(x_k) = i$ and ${e_i}_{(k)} = 0$ otherwise.
 It follows that $e = \sum_{i=1}^{c}e_i$ is a vector of ones as each sample strictly belongs to one class.
 
-By using class vector $e_i$ as mask over $X_j$, mean of class $i$ in original dimension of view $j$ can be denoted as:
+By using class vector $e_i$ as mask over $X_j$, mean of class $i$ in original dimension of view $j$ can be expressed by:
 \begin{equation}
-    \mu^{(x)}_{ij} = \frac{1}{n_{ij}}X_j e_i
+    \mu^{(x)}_{ij} = \frac{1}{n_{ij}}\sum_{k=1}^{n_{ij}}x_{ijk} = \frac{1}{n_{ij}}X_j e_i
     \label{eq:mean_from_class_vector}
 \end{equation}
 
 \subsection{Derivation of \texorpdfstring{$\boldsymbol{S}^y_W$}{intra-class} and \texorpdfstring{$\boldsymbol{S}^y_B$}{inter-class} scatter matrices in MvDA} \label{subsec:derivation_mvda}
-    The notations of $\boldsymbol{S}^y_W$ and $\boldsymbol{S}^y_B$ used in this thesis slightly differ from those supplemented in the original publication \cite{kan2015multi} in order to derive the pre-transformed version $\boldsymbol{S}^x_W$ and $\boldsymbol{S}^x_B$ and thus requires extra reformulation from the step where we can subtitute \eqref{eq:mean_from_class_vector} in.
+    The expansions of $\boldsymbol{S}^y_W$ and $\boldsymbol{S}^y_B$ used in this thesis slightly differ from those supplemented in the original publication \cite{kan2015multi} in order to derive the pre-transformed version $\boldsymbol{S}^x_W$ and $\boldsymbol{S}^x_B$ and thus requires extra reformulation from the steps where we can subtitute \eqref{eq:mean_from_class_vector} in.
 
     The within-class scatter matrix $\boldsymbol{S}^y_W$ of MvDA in Equation \eqref{eq:MvDA_Sw} is expanded as follows:
     \begin{equation}
@@ -64,7 +64,7 @@ By using class vector $e_i$ as mask over $X_j$, mean of class $i$ in original di
     \begin{equation}
         \sum_{a=1}^{c}\sum_{b=1}^{c}e_a e_b^T = \left(\sum_{i=1}^{c}e_i\right)\left(\sum_{i=1}^{c}e_i^T\right) = ee^T
     \end{equation}
-    where $e$ is a vector of ones, hence, it's product results in a square matrix of ones.
+    where $e$ is a vector of ones, hence, its self product results in a square matrix of ones.
     Then, the between-class scatter matrix $\boldsymbol{S}^y_B$ of MvDA in Equation \eqref{eq:MvDA_Sb} can be expanded as follows:
     \begin{equation}
         \begin{split}
@@ -158,7 +158,8 @@ By using class vector $e_i$ as mask over $X_j$, mean of class $i$ in original di
             &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \left[\sum_{j=1}^{v}\omega_j^T\left(\frac{n_{aj}}{n_a}\left(\frac{1}{n_{aj}}X_j e_a\right) - \frac{n_{bj}}{n_b}\left(\frac{1}{n_{bj}}X_j e_b\right)\right)\right]^T \\
             &= \left[\sum_{j=1}^{v}\omega_j^T X_j\left(\frac{1}{n_a}e_a - \frac{1}{n_b}e_b\right)\right] \left[\sum_{j=1}^{v}\omega_j^T X_j\left(\frac{1}{n_a}e_a - \frac{1}{n_b}e_b\right)\right]^T \\
             &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \left(\frac{1}{n_a}e_a - \frac{1}{n_b}e_b\right) \left(\frac{1}{n_a}e_a^T - \frac{1}{n_b}e_b^T\right) X_r^T\omega_r \\
-            &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \left(\frac{1}{n_a^2}e_a e_a^T + \frac{1}{n_b^2}e_b e_b^T\right) X_r^T\omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \frac{1}{n_a n_b}\left(e_a e_b^T + e_b e_a^T\right) X_r^T\omega_r \\
+            &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \left(\frac{1}{n_a^2}e_a e_a^T + \frac{1}{n_b^2}e_b e_b^T\right) X_r^T\omega_r \\
+            &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \frac{1}{n_a n_b}\left(e_a e_b^T + e_b e_a^T\right) X_r^T\omega_r \\
             &= \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j E_{ab} X_r^T\omega_r - \sum_{j=1}^{v}\sum_{r=1}^{v}\omega_j^T X_j \tilde{E}_{ab} X_r^T\omega_r \\
             &= W^T X \boldsymbol{E}_{ab} X^T W - W^T X \boldsymbol{\tilde{E}}_{ab} X^T W \\
             &= W^T X \left(\boldsymbol{E}_{ab} - \boldsymbol{\tilde{E}}_{ab}\right) X^T W \\
