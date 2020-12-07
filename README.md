@@ -1,2 +1,2 @@
 ### Master Thesis
-Làm sao để được ra trường đúng hạn đây? Nghỉ Samsung chăng?
+Ra được trường rồi, đội ơn sir Cường!
